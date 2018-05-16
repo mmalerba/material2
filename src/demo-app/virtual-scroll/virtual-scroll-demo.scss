@@ -1,7 +1,9 @@
 .demo-viewport {
-  height: 500px;
-  width: 500px;
-  border: 1px solid black;
+  position: absolute;
+  top: 64px;
+  bottom: 0;
+  left: 0;
+  right: 0;
 
   .cdk-virtual-scroll-content-wrapper {
     display: flex;
@@ -9,31 +11,6 @@
   }
 }
 
-.demo-horizontal {
-  .cdk-virtual-scroll-content-wrapper {
-    flex-direction: row;
-  }
-
-  .demo-item {
-    -ms-writing-mode: tb-lr;
-    -webkit-writing-mode: vertical-lr;
-    /* stylelint-disable-next-line material/no-prefixes */
-    writing-mode: vertical-lr;
-  }
-}
-
-.demo-state-item {
-  height: 60px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.demo-state {
-  font-size: 20px;
-  font-weight: 500;
-}
-
-.demo-capital {
-  font-size: 14px;
+.demo-item {
+  width: 100%;
 }
