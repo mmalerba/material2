@@ -1,5 +1,5 @@
 import {writeFileSync} from 'fs';
-import {join} from 'path';
+import {join, resolve} from 'path';
 
 
 const Bundler = require('scss-bundle').Bundler;
@@ -17,14 +17,15 @@ export async function main(args: string[]): Promise<number> {
   const parsedArgs: {srcs: string, output: string, entry: string} = minimist(args);
   const inputFiles = parsedArgs.srcs.split(',');
 
-  return new Bundler().Bundle(join(workspaceRoot, parsedArgs.entry), inputFiles).then(result => {
-    writeFileSync(parsedArgs.output, result.bundledContent);
-    return 0;
-  }).catch(error => {
-    console.error('Sass bundling failed');
-    console.dir(error);
-    return 1;
-  });
+  return new Bundler().Bundle(
+    join(workspaceRoot, parsedArgs.entry), inputFiles).then(result => {
+      writeFileSync(parsedArgs.output, result.bundledContent);
+      return 0;
+    }).catch(error => {
+      console.error('Sass bundling failed');
+      console.dir(error);
+      return 1;
+    });
 }
 
 if (require.main === module) {

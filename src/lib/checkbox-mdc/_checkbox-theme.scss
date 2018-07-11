@@ -1,0 +1,32 @@
+@import '../core/theming/theming';
+@import '@material/checkbox/mdc-checkbox';
+
+
+@mixin mdc-checkbox-theme($theme) {
+  $primary: mat-color(map-get($theme, primary));
+  $accent: mat-color(map-get($theme, accent));
+  $warn: mat-color(map-get($theme, warn));
+
+
+  // Without these defined, we get a flash of the mdc-theme variable color.
+  :root {
+    --mdc-theme-secondary: $accent;
+    --mdc-theme-warn: $warn;
+    --mdc-theme-primary: $primary;
+  }
+
+  mdc-checkbox.accent {
+    @include mdc-checkbox-container-colors($marked-fill-color: $accent);
+    @include mdc-checkbox-focus-indicator-color($accent);
+  }
+
+  mdc-checkbox.primary {
+    @include mdc-checkbox-container-colors($marked-fill-color: $primary);
+    @include mdc-checkbox-focus-indicator-color($primary);
+  }
+
+  mdc-checkbox.warn {
+    @include mdc-checkbox-container-colors($marked-fill-color: $warn);
+    @include mdc-checkbox-focus-indicator-color($warn);
+  }
+}

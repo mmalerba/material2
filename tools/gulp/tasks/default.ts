@@ -9,4 +9,3 @@ task('help', function() {
   console.log(`You're probably looking for ${yellow('test')} or ${yellow('serve:devapp')}.`);
   console.log();
 });
-

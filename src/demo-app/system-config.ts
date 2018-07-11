@@ -20,6 +20,8 @@ System.config({
     'tslib': 'node:tslib/tslib.js',
     'moment': 'node:moment/min/moment-with-locales.min.js',
 
+    '@material/checkbox': 'node:@material/checkbox/dist/mdc.checkbox.min.js',
+
     // Angular specific mappings.
     '@angular/core': 'node:@angular/core/bundles/core.umd.js',
     '@angular/common': 'node:@angular/common/bundles/common.umd.js',
@@ -72,6 +74,7 @@ System.config({
     '@angular/material/button-toggle': 'dist/packages/material/button-toggle/index.js',
     '@angular/material/card': 'dist/packages/material/card/index.js',
     '@angular/material/checkbox': 'dist/packages/material/checkbox/index.js',
+    '@angular/material/checkbox-mdc': 'dist/packages/material/checkbox-mdc/index.js',
     '@angular/material/chips': 'dist/packages/material/chips/index.js',
     '@angular/material/core': 'dist/packages/material/core/index.js',
     '@angular/material/datepicker': 'dist/packages/material/datepicker/index.js',

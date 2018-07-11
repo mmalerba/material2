@@ -41,6 +41,7 @@ export const rollupGlobals = {
   'moment': 'moment',
   'tslib': 'tslib',
 
+  '@material/checkbox': 'mdc.checkbox',
   '@angular/animations': 'ng.animations',
   '@angular/common': 'ng.common',
   '@angular/common/http': 'ng.common.http',

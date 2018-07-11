@@ -1,16 +1,16 @@
 <h1>mat-checkbox: Basic Example</h1>
 <form>
-<mat-checkbox [(ngModel)]="isChecked"
-             name="cb"
-             value="basic_checkbox"
-             [color]="checkboxColor()"
-             (change)="isIndeterminate = false"
-             [indeterminate]="isIndeterminate"
-             [disabled]="isDisabled"
-             [labelPosition]="labelPosition">
+<mdc-checkbox [(ngModel)]="isChecked"
+              name="cb"
+              value="basic_checkbox"
+              [color]="checkboxColor()"
+              (change)="isIndeterminate = false"
+              [indeterminate]="isIndeterminate"
+              [disabled]="isDisabled"
+              [labelPosition]="labelPosition">
   Do you want to <em>foobar</em> the <em>bazquux</em>?
 
-</mat-checkbox> - <strong>{{printResult()}}</strong>
+</mdc-checkbox> - <strong>{{printResult()}}</strong>
 </form>
 <div class="demo-checkbox">
 <input id="indeterminate-toggle"

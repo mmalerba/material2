@@ -56,7 +56,8 @@ import {
   MatTabsModule,
   MatToolbarModule,
   MatTooltipModule,
-  MatTreeModule
+  MatTreeModule,
+  MdcCheckboxModule,
 } from '@angular/material';
 
 
@@ -114,6 +115,7 @@ import {
     ScrollingModule,
     DialogModule,
     DragDropModule,
+    MdcCheckboxModule
   ]
 })
 export class DemoMaterialModule {}

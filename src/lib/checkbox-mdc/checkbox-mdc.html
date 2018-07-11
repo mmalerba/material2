@@ -1,0 +1,31 @@
+<div class="mdc-form-field"
+     [class.mdc-form-field--align-start]="labelPosition === 'after'"
+     [class.mdc-form-field--align-end]="labelPosition === 'before'"
+     #formField>
+  <div class="mdc-checkbox">
+    <input #input
+           type="checkbox" class="mdc-checkbox__native-control"
+           [id]="inputId"
+           [required]="required"
+           [checked]="checked"
+           [attr.value]="value"
+           [disabled]="disabled"
+           [attr.name]="name"
+           [tabIndex]="tabIndex"
+           [indeterminate]="indeterminate"
+           [attr.aria-label]="ariaLabel || null"
+           [attr.aria-labelledby]="ariaLabelledby"
+           [attr.aria-checked]="_getAriaChecked()">
+    <div class="mdc-checkbox__background">
+      <svg class="mdc-checkbox__checkmark"
+            viewBox="0 0 24 24">
+        <path class="mdc-checkbox__checkmark-path"
+              fill="none"
+              stroke="white"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
+      </svg>
+      <div class="mdc-checkbox__mixedmark"></div>
+    </div>
+  </div>
+  <label [for]="inputId"><ng-content></ng-content></label>
+</div>

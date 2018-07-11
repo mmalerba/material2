@@ -33,6 +33,8 @@ module.exports = (config) => {
       {pattern: 'node_modules/rxjs/**/*', included: false, watched: false},
 
       {pattern: 'test/karma-system-config.js', included: true, watched: false},
+      {pattern: 'node_modules/@material/**/*', included: false, watched: false},
+
       {pattern: 'test/karma-test-shim.js', included: true, watched: false},
 
       // Include a Material theme in the test suite.

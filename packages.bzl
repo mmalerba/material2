@@ -39,6 +39,7 @@ MATERIAL_PACKAGES = [
   "button-toggle",
   "card",
   "checkbox",
+  "checkbox-mdc",
   "chips",
   "core",
   "datepicker",

@@ -1,5 +1,5 @@
 import {task, src, dest} from 'gulp';
-import {join} from 'path';
+import {join, resolve} from 'path';
 import {writeFileSync, mkdirpSync} from 'fs-extra';
 import {Bundler} from 'scss-bundle';
 import {composeRelease, buildConfig, sequenceTask} from 'material2-build-tools';

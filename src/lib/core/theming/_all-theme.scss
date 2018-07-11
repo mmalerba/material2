@@ -7,6 +7,7 @@
 @import '../../button-toggle/button-toggle-theme';
 @import '../../card/card-theme';
 @import '../../checkbox/checkbox-theme';
+@import '../../checkbox-mdc/checkbox-theme';
 @import '../../chips/chips-theme';
 @import '../../table/table-theme';
 @import '../../datepicker/datepicker-theme';
@@ -46,6 +47,7 @@
   @include mat-button-toggle-theme($theme);
   @include mat-card-theme($theme);
   @include mat-checkbox-theme($theme);
+  @include mdc-checkbox-theme($theme);
   @include mat-chips-theme($theme);
   @include mat-table-theme($theme);
   @include mat-datepicker-theme($theme);
