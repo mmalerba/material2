@@ -104,7 +104,7 @@ export class MatDrawerContent extends CdkScrollable implements AfterContentInit 
   animations: [matDrawerAnimations.transformDrawer],
   host: {
     'class': 'mat-drawer',
-    '[@transform]': '_animationState',
+    //'[@transform]': '_animationState',
     // must prevent the browser from aligning text based on value
     '[attr.align]': 'null',
     '[class.mat-drawer-end]': 'position === "end"',
