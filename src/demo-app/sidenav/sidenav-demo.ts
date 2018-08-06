@@ -8,6 +8,13 @@
 
 import {Component} from '@angular/core';
 
+import { Observable } from 'rxjs';
+import {
+  BreakpointObserver,
+  Breakpoints,
+  BreakpointState
+} from '@angular/cdk/layout';
+import { map } from 'rxjs/operators';
 
 @Component({
   moduleId: module.id,
@@ -17,15 +24,13 @@ import {Component} from '@angular/core';
 
 })
 export class SidenavDemo {
-  isLaunched = false;
-  fillerContent = Array(30);
-  fixed = false;
-  coverHeader = false;
-  showHeader = false;
-  showFooter = false;
-  modeIndex = 0;
-  hasBackdrop: boolean;
-  get mode() { return ['side', 'over', 'push'][this.modeIndex]; }
-  get fixedTop() { return this.fixed && this.showHeader && !this.coverHeader ? 64 : 0; }
-  get fixedBottom() { return this.fixed && this.showFooter && !this.coverHeader ? 64 : 0; }
+  isHandset$: Observable<boolean> = this.breakpointObserver
+    .observe(Breakpoints.Handset)
+    .pipe(map(result => result.matches));
+
+  constructor(private breakpointObserver: BreakpointObserver) {}
+
+  ngOnInit() {
+    this.isHandset$.subscribe(isHandset => console.log(isHandset));
+  }
 }

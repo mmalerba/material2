@@ -1,4 +1,4 @@
-.demo-sidenav-area {
+.sidenav-demo-content {
   position: fixed;
   top: 0;
   bottom: 0;
@@ -6,20 +6,26 @@
   right: 0;
   display: flex;
   flex-direction: column;
+}
 
-  .mat-toolbar {
-    flex: 0;
-  }
+.basic-container {
+  padding: 5px;
+}
 
-  .mat-sidenav-container {
-    flex: 1;
-  }
+.version-info {
+  font-size: 8pt;
+  float: right;
+}
 
-  .demo-sidenav-content {
-    padding: 32px;
-  }
+.sidenav-container {
+  height: 100%;
+}
 
-  .demo-filler-content {
-    padding: 60px;
-  }
+.sidenav {
+  width: 200px;
+}
+
+.mat-toolbar.mat-primary {
+  position: sticky;
+  top: 0;
 }
