@@ -105,8 +105,6 @@ export class MatDrawerContent extends CdkScrollable implements AfterContentInit 
   host: {
     'class': 'mat-drawer',
     '[@transform]': '_animationState',
-    '(@transform.start)': '_onAnimationStart($event)',
-    '(@transform.done)': '_onAnimationEnd($event)',
     // must prevent the browser from aligning text based on value
     '[attr.align]': 'null',
     '[class.mat-drawer-end]': 'position === "end"',
@@ -364,17 +362,10 @@ export class MatDrawer implements AfterContentInit, AfterContentChecked, OnDestr
     });
   }
 
-  _onAnimationStart(event: AnimationEvent) {
-    this._animationStarted.emit(event);
+  _onAnimationStart(_: AnimationEvent) {
   }
 
-  _onAnimationEnd(event: AnimationEvent) {
-    const {fromState, toState} = event;
-
-    if ((toState.indexOf('open') === 0 && fromState === 'void') ||
-        (toState === 'void' && fromState.indexOf('open') === 0)) {
-      this.openedChange.emit(this._opened);
-    }
+  _onAnimationEnd(_: AnimationEvent) {
   }
 
   get _width(): number {
