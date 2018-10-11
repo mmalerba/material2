@@ -1,9 +1,12 @@
+@import '@material/checkbox/mixins';
+@import '@material/ripple/mixins';
+@import '@material/theme/functions';
 @import '../core/theming/theming';
 @import '../core/typography/typography-utils';
 @import '../../cdk/a11y/a11y';
 
 
-@mixin mat-checkbox-theme($theme) {
+@mixin mat-checkbox-theme-classic($theme) {
   $is-dark-theme: map-get($theme, is-dark);
   $primary: map-get($theme, primary);
   $accent: map-get($theme, accent);
@@ -113,5 +116,78 @@
   // TODO(kara): Remove this style when fixing vertical baseline
   .mat-checkbox-layout .mat-checkbox-label {
     line-height: mat-line-height($config, body-2);
+  }
+}
+
+
+@mixin mat-checkbox-theme($theme, $mdc: (checkbox: both)) {
+  $mdc-mode: map-get($mdc, checkbox) or classic;
+
+  @if ($mdc-mode == classic or $mdc-mode == both) {
+    @include mat-checkbox-theme-classic($theme);
+  }
+  @if ($mdc-mode == mdc or $mdc-mode == both) {
+    $primary: mat-color(map-get($theme, primary));
+    $accent: mat-color(map-get($theme, accent));
+    $warn: mat-color(map-get($theme, warn));
+    $background: mat-color(map-get($theme, background), background);
+
+    $mdc-theme-primary: $primary !global;
+    $mdc-theme-on-primary: if(mdc-theme-contrast-tone($mdc-theme-primary) == "dark", #000, #fff) !global;
+
+    $mdc-theme-secondary: $accent !global;
+    $mdc-theme-on-secondary: if(mdc-theme-contrast-tone($mdc-theme-secondary) == "dark", #000, #fff) !global;
+
+    $mdc-theme-background: $background !global;
+
+    $mdc-theme-surface: $background !global;
+    $mdc-theme-on-surface: if(mdc-theme-contrast-tone($mdc-theme-surface) == "dark", #000, #fff) !global;
+
+    $mdc-theme-error: $warn !global;
+    $mdc-theme-on-error: if(mdc-theme-contrast-tone($mdc-theme-error) == "dark", #000, #fff) !global;
+
+    $mdc-theme-property-values: (
+      // Primary
+        primary: $mdc-theme-primary,
+      // Secondary
+        secondary: $mdc-theme-secondary,
+      // Background
+        background: $mdc-theme-background,
+      // Surface
+        surface: $mdc-theme-surface,
+      // Error
+        error: $mdc-theme-error,
+        on-primary: $mdc-theme-on-primary,
+        on-secondary: $mdc-theme-on-secondary,
+        on-surface: $mdc-theme-on-surface,
+        on-error: $mdc-theme-on-error,
+      // Text-primary on "background" background
+        text-primary-on-background: mdc-theme-ink-color-for-fill_(primary, $mdc-theme-background),
+        text-secondary-on-background: mdc-theme-ink-color-for-fill_(secondary, $mdc-theme-background),
+        text-hint-on-background: mdc-theme-ink-color-for-fill_(hint, $mdc-theme-background),
+        text-disabled-on-background: mdc-theme-ink-color-for-fill_(disabled, $mdc-theme-background),
+        text-icon-on-background: mdc-theme-ink-color-for-fill_(icon, $mdc-theme-background),
+      // Text-primary on "light" background
+        text-primary-on-light: mdc-theme-ink-color-for-fill_(primary, light),
+        text-secondary-on-light: mdc-theme-ink-color-for-fill_(secondary, light),
+        text-hint-on-light: mdc-theme-ink-color-for-fill_(hint, light),
+        text-disabled-on-light: mdc-theme-ink-color-for-fill_(disabled, light),
+        text-icon-on-light: mdc-theme-ink-color-for-fill_(icon, light),
+      // Text-primary on "dark" background
+        text-primary-on-dark: mdc-theme-ink-color-for-fill_(primary, dark),
+        text-secondary-on-dark: mdc-theme-ink-color-for-fill_(secondary, dark),
+        text-hint-on-dark: mdc-theme-ink-color-for-fill_(hint, dark),
+        text-disabled-on-dark: mdc-theme-ink-color-for-fill_(disabled, dark),
+        text-icon-on-dark: mdc-theme-ink-color-for-fill_(icon, dark)
+    ) !global;
+
+    .mdc-checkbox {
+      @include mdc-states($mdc-checkbox-baseline-theme-color);
+    }
+
+    @include mdc-checkbox-ink-color($mdc-checkbox-mark-color);
+    @include mdc-checkbox-focus-indicator-color($mdc-checkbox-baseline-theme-color);
+    @include mdc-checkbox-container-colors;
+    @include mdc-checkbox-disabled-container-color_;
   }
 }
