@@ -1,12 +1,11 @@
+import {FocusMonitor} from '@angular/cdk/a11y';
 import {ViewportRuler} from '@angular/cdk/scrolling';
-import {
-  CdkTableModule,
-  DataSource
-} from '@angular/cdk/table';
+import {CdkTableModule, DataSource} from '@angular/cdk/table';
 import {Component, ElementRef, NgModule} from '@angular/core';
 import {
   MatAutocompleteModule,
   MatBadgeModule,
+  MatBottomSheet,
   MatBottomSheetModule,
   MatButtonModule,
   MatButtonToggleModule,
@@ -42,11 +41,10 @@ import {
   MatTabsModule,
   MatToolbarModule,
   MatTooltipModule,
-  MatBottomSheet,
 } from '@angular/material';
+import {MatMdcCheckboxModule} from '@angular/material/checkbox';
 import {BrowserModule} from '@angular/platform-browser';
 import {ServerModule} from '@angular/platform-server';
-import {FocusMonitor} from '@angular/cdk/a11y';
 import {Observable, of as observableOf} from 'rxjs';
 
 export class TableDataSource extends DataSource<any> {
@@ -134,6 +132,7 @@ export class KitchenSink {
     MatSortModule,
     MatTableModule,
     MatStepperModule,
+    MatMdcCheckboxModule,
 
     // CDK Modules
     CdkTableModule
