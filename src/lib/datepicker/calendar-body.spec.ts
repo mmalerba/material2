@@ -180,5 +180,5 @@ class CalendarBodyWithDisabledCells {
 
 
 function createCell(value: number) {
-  return new MatCalendarCell(value, `${value}`, `${value}-label`, true);
+  return new MatCalendarCell(value, `${value}`, `${value}-label`, true, new Date(value));
 }
