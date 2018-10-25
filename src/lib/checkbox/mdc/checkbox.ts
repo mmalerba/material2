@@ -6,16 +6,27 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
+import {DOCUMENT} from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
-  Component, ElementRef,
+  Component,
+  ElementRef,
+  Inject,
+  OnDestroy,
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-
-import {MDCCheckbox} from '@material/checkbox';
-import {MDCFormField} from '@material/form-field';
+import {getCorrectEventName} from '@material/animation';
+import {MDCCheckboxAdapter, MDCCheckboxFoundation} from '@material/checkbox';
+import {MDCFormFieldAdapter, MDCFormFieldFoundation} from '@material/form-field';
+import {
+  MDCRipple,
+  MDCRippleAdapter,
+  MDCRippleFoundation,
+  util as rippleUtil
+} from '@material/ripple';
+import {MDCSelectionControl} from '@material/selection-control';
 
 @Component({
   moduleId: module.id,
@@ -25,16 +36,142 @@ import {MDCFormField} from '@material/form-field';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class MatMdcCheckbox implements AfterViewInit {
+export class MatMdcCheckbox implements AfterViewInit, OnDestroy, MDCSelectionControl {
   @ViewChild('formField') formField: ElementRef<HTMLElement>;
-  @ViewChild('checkbox') checkbox: ElementRef<HTMLInputElement>;
+  @ViewChild('checkbox') checkbox: ElementRef<HTMLElement>;
+  @ViewChild('nativeCheckbox') nativeCheckbox: ElementRef<HTMLInputElement>;
+  @ViewChild('label') label: ElementRef<HTMLLabelElement>;
 
-  private _mdcFormField: MDCFormField;
-  private _mdcCheckbox: MDCCheckbox;
+  private _checkboxFoundation: MDCCheckboxFoundation;
+  private _formFieldFoundation: MDCFormFieldFoundation;
+  private _ripple: MDCRipple;
+  private _handleChange: EventListener;
+  private _handleAnimationEnd: EventListener;
+
+  private _checkboxAdapter: MDCCheckboxAdapter & {
+    // Type is missing some properties
+    isIndeterminate: () => boolean,
+    isChecked: () => boolean,
+    hasNativeControl: () => boolean,
+    setNativeControlDisabled: (disabled: boolean) => void,
+  } = {
+    addClass: (className) => this.checkbox.nativeElement.classList.add(className),
+    removeClass: (className) => this.checkbox.nativeElement.classList.remove(className),
+    setNativeControlAttr: (attr, value) =>
+        this.nativeCheckbox.nativeElement.setAttribute(attr, value),
+    removeNativeControlAttr: (attr) => this.nativeCheckbox.nativeElement.removeAttribute(attr),
+    getNativeControl: () => this.nativeCheckbox.nativeElement,
+    isIndeterminate: () => this.indeterminate,
+    isChecked: () => this.checked,
+    hasNativeControl: () => !!this.nativeCheckbox.nativeElement,
+    setNativeControlDisabled:
+        (disabled: boolean) => this.nativeCheckbox.nativeElement.disabled = disabled,
+    forceLayout: () => this.checkbox.nativeElement.offsetWidth,
+    isAttachedToDOM: () => !!this.checkbox.nativeElement.parentNode,
+    // Type lists some properties that are no longer needed
+    registerAnimationEndHandler: undefined as any,
+    deregisterAnimationEndHandler: undefined as any,
+    registerChangeHandler: undefined as any,
+    deregisterChangeHandler: undefined as any,
+  };
+
+  private _formFieldAdapter: MDCFormFieldAdapter = {
+    registerInteractionHandler: (type, handler) =>
+        this.label.nativeElement.addEventListener(type, handler),
+    deregisterInteractionHandler: (type, handler) =>
+        this.label.nativeElement.removeEventListener(type, handler),
+    activateInputRipple: () => {
+      if (this.ripple) {
+        this.ripple.activate();
+      }
+    },
+    deactivateInputRipple: () => {
+      if (this.ripple) {
+        this.ripple.deactivate();
+      }
+    },
+  };
+
+  constructor(@Inject(DOCUMENT) private _doc: any) {}
 
   ngAfterViewInit() {
-    this._mdcFormField = new MDCFormField(this.formField.nativeElement);
-    this._mdcCheckbox = new MDCCheckbox(this.checkbox.nativeElement);
-    this._mdcFormField.input = this._mdcCheckbox;
+    this._checkboxFoundation = new MDCCheckboxFoundation(this._checkboxAdapter);
+    this._formFieldFoundation = new MDCFormFieldFoundation(this._formFieldAdapter);
+    this._checkboxFoundation.init();
+    this._formFieldFoundation.init();
+
+    this._ripple = this._initRipple();
+
+    // Initial sync with DOM
+    this._handleChange = () => this._checkboxFoundation.handleChange();
+    this._handleAnimationEnd= () => this._checkboxFoundation.handleAnimationEnd();
+    this.nativeCheckbox.nativeElement.addEventListener('change', this._handleChange);
+    this.checkbox.nativeElement.addEventListener(
+        getCorrectEventName(window, 'animationend'), this._handleAnimationEnd);
+  }
+
+  ngOnDestroy() {
+    this._ripple.destroy();
+    this.nativeCheckbox.nativeElement.removeEventListener('change', this._handleChange);
+    this.checkbox.nativeElement.removeEventListener(
+        getCorrectEventName(window, 'animationend'), this._handleAnimationEnd);
+    this._checkboxFoundation.destroy();
+    this._formFieldFoundation.destroy();
+  }
+
+  get checked() {
+    return this.nativeCheckbox.nativeElement.checked;
+  }
+  set checked(checked) {
+    this.nativeCheckbox.nativeElement.checked = checked;
+  }
+
+  get indeterminate(): boolean {
+    return this.nativeCheckbox.nativeElement.indeterminate;
+  }
+  set indeterminate(indeterminate: boolean) {
+    this.nativeCheckbox.nativeElement.indeterminate = indeterminate;
+  }
+
+  get disabled() {
+    return this.nativeCheckbox.nativeElement.disabled;
+  }
+  set disabled(disabled) {
+    this._checkboxFoundation.setDisabled(disabled);
+  }
+
+  get ripple() {
+    return this._ripple;
+  }
+
+  private _initRipple() {
+    const MATCHES = rippleUtil.getMatchesProperty(HTMLElement.prototype) as any as 'matches';
+    const rippleAdapter: MDCRippleAdapter = {
+      browserSupportsCssVars: () => !!rippleUtil.supportsCssVariables(window),
+      isSurfaceDisabled: () => this.disabled,
+      addClass: (className) => this.checkbox.nativeElement.classList.add(className),
+      removeClass: (className) => this.checkbox.nativeElement.classList.remove(className),
+      containsEventTarget: (target: Node) => this.checkbox.nativeElement.contains(target),
+      registerDocumentInteractionHandler: (evtType, handler) =>
+          this._doc.documentElement.addEventListener(evtType, handler, rippleUtil.applyPassive()),
+      deregisterDocumentInteractionHandler: (evtType, handler) =>
+          this._doc.documentElement.removeEventListener(evtType, handler,
+              rippleUtil.applyPassive() as EventListenerOptions),
+      registerResizeHandler: (handler: EventListener) => window.addEventListener('resize', handler),
+      deregisterResizeHandler: (handler: EventListener) =>
+          window.removeEventListener('resize', handler),
+      updateCssVariable: (varName: string, value: string | null) =>
+          this.checkbox.nativeElement.style.setProperty(varName, value),
+      computeBoundingRect: () => this.checkbox.nativeElement.getBoundingClientRect(),
+      getWindowPageOffset: () => ({x: window.pageXOffset, y: window.pageYOffset}),
+      isUnbounded: () => true,
+      isSurfaceActive: () => this.nativeCheckbox.nativeElement[MATCHES](':active'),
+      registerInteractionHandler: (type: string, handler: EventListener) =>
+          this.nativeCheckbox.nativeElement.addEventListener(type, handler),
+      deregisterInteractionHandler: (type: string, handler: EventListener) =>
+          this.nativeCheckbox.nativeElement.removeEventListener(type, handler),
+    };
+    const foundation = new MDCRippleFoundation(rippleAdapter);
+    return new MDCRipple(this.checkbox.nativeElement, foundation);
   }
 }
