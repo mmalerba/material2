@@ -2,7 +2,8 @@
      class="mdc-form-field">
   <div #checkbox
        class="mdc-checkbox">
-    <input type="checkbox"
+    <input #nativeCheckbox
+           type="checkbox"
            class="mdc-checkbox__native-control"
            id="checkbox-1"/>
     <div class="mdc-checkbox__background">
@@ -15,5 +16,5 @@
       <div class="mdc-checkbox__mixedmark"></div>
     </div>
   </div>
-  <label for="checkbox-1">Checkbox 1</label>
+  <label #label for="checkbox-1">Checkbox 1</label>
 </div>
