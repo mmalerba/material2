@@ -20,6 +20,13 @@ System.config({
     'tslib': 'node:tslib/tslib.js',
     'moment': 'node:moment/min/moment-with-locales.min.js',
 
+    '@material/animation': 'node:@material/animation/dist/mdc.animation.min.js',
+    '@material/base': 'node:@material/base/dist/mdc.base.min.js',
+    '@material/checkbox': 'node:@material/checkbox/dist/mdc.checkbox.min.js',
+    '@material/form-field': 'node:@material/form-field/dist/mdc.formField.min.js',
+    '@material/ripple': 'node:@material/ripple/dist/mdc.ripple.min.js',
+    '@material/selection-control': 'node:@material/selection-control/dist/mdc.selectionControl.min.js',
+
     // Angular specific mappings.
     '@angular/core': 'node:@angular/core/bundles/core.umd.js',
     '@angular/common': 'node:@angular/common/bundles/common.umd.js',
