@@ -44,6 +44,7 @@ import {
   MatTooltipModule,
   MatBottomSheet,
 } from '@angular/material';
+import {MatMdcCheckboxModule} from '@angular/material-experimental';
 import {BrowserModule} from '@angular/platform-browser';
 import {ServerModule} from '@angular/platform-server';
 import {FocusMonitor} from '@angular/cdk/a11y';
@@ -135,6 +136,7 @@ export class KitchenSink {
     MatSortModule,
     MatTableModule,
     MatStepperModule,
+    MatMdcCheckboxModule,
 
     // CDK Modules
     CdkTableModule,
