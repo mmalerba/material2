@@ -7,7 +7,7 @@
     "noUnusedParameters": true,
     "strictNullChecks": true,
     "strictFunctionTypes": true,
-    "noImplicitAny": true,
+    "noImplicitAny": false,
     "noImplicitThis": true,
     "module": "commonjs",
     "moduleResolution": "node",
@@ -23,7 +23,8 @@
       "@angular/material": ["./material"],
       "@angular/cdk/*": ["./cdk/*"],
       "@angular/material/*": ["./material/*"]
-    }
+    },
+    "allowJs": true
   },
   "files": [
     "prerender.ts"
