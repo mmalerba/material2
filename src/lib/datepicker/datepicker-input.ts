@@ -140,7 +140,7 @@ export class MatDatepickerInput<D> implements ControlValueAccessor, OnDestroy, V
     if (this._value && !this._dateAdapter.sameDate(value, this._value.getFirstSelectedDate())) {
       this._value.add(value);
     } else {
-      this._value = new MatSingleDateSelection(this._dateAdapter, value);
+      this._value.setSelection(value);
     }
 
     this._lastValueValid = !this._value || this._value.isValid();
@@ -153,7 +153,7 @@ export class MatDatepickerInput<D> implements ControlValueAccessor, OnDestroy, V
       this._valueChange.emit(value);
     }
   }
-  private _value: MatDateSelection<D>;
+  private _value: MatSingleDateSelection<D>;
 
   /** The minimum valid date. */
   @Input()

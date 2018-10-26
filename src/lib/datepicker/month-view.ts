@@ -6,6 +6,7 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
+import {Directionality} from '@angular/cdk/bidi';
 import {
   DOWN_ARROW,
   END,
@@ -15,8 +16,8 @@ import {
   PAGE_DOWN,
   PAGE_UP,
   RIGHT_ARROW,
-  UP_ARROW,
   SPACE,
+  UP_ARROW,
 } from '@angular/cdk/keycodes';
 import {
   AfterContentInit,
@@ -26,25 +27,23 @@ import {
   EventEmitter,
   Inject,
   Input,
+  OnDestroy,
   Optional,
   Output,
-  ViewEncapsulation,
   ViewChild,
-  SkipSelf,
-  OnDestroy,
+  ViewEncapsulation,
 } from '@angular/core';
 import {
   DateAdapter,
+  DateRange,
   MAT_DATE_FORMATS,
+  MAT_SINGLE_DATE_SELECTION_MODEL_PROVIDER,
   MatDateFormats,
-  MatDateSelection,
-  MAT_SINGLE_DATE_SELECTION_MODEL_FACTORY,
-  DateRange
+  MatDateSelection
 } from '@angular/material/core';
-import {Directionality} from '@angular/cdk/bidi';
+import {Subscription} from 'rxjs';
 import {MatCalendarBody, MatCalendarCell} from './calendar-body';
 import {createMissingDateImplError} from './datepicker-errors';
-import {Subscription} from 'rxjs';
 
 
 const DAYS_PER_WEEK = 7;
@@ -53,7 +52,6 @@ const DAYS_PER_WEEK = 7;
 /**
  * An internal component used to display a single month in the datepicker.
  * @docs-private
- * @dynamic
  */
 @Component({
   moduleId: module.id,
@@ -62,11 +60,7 @@ const DAYS_PER_WEEK = 7;
   exportAs: 'matMonthView',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [{
-    provide: MatDateSelection,
-    deps: [[new Optional(), new SkipSelf(), MatDateSelection], DateAdapter],
-    useFactory: MAT_SINGLE_DATE_SELECTION_MODEL_FACTORY,
-  }]
+  providers: [MAT_SINGLE_DATE_SELECTION_MODEL_PROVIDER],
 })
 export class MatMonthView<D> implements AfterContentInit, OnDestroy {
   /**
