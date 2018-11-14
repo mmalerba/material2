@@ -40,8 +40,24 @@
       [value]="mdcValue"
       [checked]="mdcChecked"
       [disabled]="mdcDisabled"
-      [indeterminate]="mdcIndeterminate">
-    MDC Checkbox
+      [indeterminate]="mdcIndeterminate"
+      (change)="mdcChecked = $event.checked"
+      (indeterminateChange)="mdcIndeterminate = $event">
+    MDC Checkbox w/ [checked] & (change)
+  </mat-mdc-checkbox>
+  <mat-mdc-checkbox
+      [required]="mdcRequired"
+      [labelPosition]="mdcLabelAfter ? 'after' : 'before'"
+      [aria-label]="mdcLabel"
+      [aria-labelledby]="mdcLabelledBy"
+      [id]="mdcId"
+      [name]="mdcName"
+      [value]="mdcValue"
+      [disabled]="mdcDisabled"
+      [indeterminate]="mdcIndeterminate"
+      [(ngModel)]="mdcChecked"
+      (indeterminateChange)="mdcIndeterminate = $event">
+    MDC Checkbox w/ [(ngModel)]
   </mat-mdc-checkbox>
 </div>
 
