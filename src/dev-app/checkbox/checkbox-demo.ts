@@ -70,6 +70,17 @@ export class MatCheckboxDemoNestedChecklist {
   styleUrls: ['checkbox-demo.css'],
 })
 export class CheckboxDemo {
+  mdcRequired = false;
+  mdcLabelAfter = false;
+  mdcChecked = false;
+  mdcDisabled = false;
+  mdcIndeterminate = false;
+  mdcLabel = null;
+  mdcLabelledBy = null;
+  mdcId = null;
+  mdcName = null;
+  mdcValue = null;
+
   isIndeterminate: boolean = false;
   isChecked: boolean = false;
   isDisabled: boolean = false;
