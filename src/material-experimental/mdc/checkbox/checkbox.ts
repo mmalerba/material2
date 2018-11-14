@@ -6,13 +6,17 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
+import {coerceBooleanProperty} from '@angular/cdk/coercion';
 import {DOCUMENT} from '@angular/common';
 import {
   AfterViewInit,
+  Attribute,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   Inject,
+  Input,
   OnDestroy,
   ViewChild,
   ViewEncapsulation
@@ -28,13 +32,20 @@ import {
 } from '@material/ripple';
 import {MDCSelectionControl} from '@material/selection-control';
 
+let nextUniqueId = 0;
+
 @Component({
   moduleId: module.id,
   selector: 'mat-mdc-checkbox',
   templateUrl: 'checkbox.html',
+  styleUrls: ['checkbox.css'],
+  host: {
+    '[id]': 'id',
+    '[attr.tabindex]': 'null',
+  },
   exportAs: 'matCheckbox',
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MatMdcCheckbox implements AfterViewInit, OnDestroy, MDCSelectionControl {
   @ViewChild('formField') formField: ElementRef<HTMLElement>;
@@ -68,7 +79,7 @@ export class MatMdcCheckbox implements AfterViewInit, OnDestroy, MDCSelectionCon
         (disabled: boolean) => this.nativeCheckbox.nativeElement.disabled = disabled,
     forceLayout: () => this.checkbox.nativeElement.offsetWidth,
     isAttachedToDOM: () => !!this.checkbox.nativeElement.parentNode,
-    // Type lists some properties that are no longer needed
+    // .d.ts lists some properties that are no longer needed
     registerAnimationEndHandler: undefined as any,
     deregisterAnimationEndHandler: undefined as any,
     registerChangeHandler: undefined as any,
@@ -92,7 +103,70 @@ export class MatMdcCheckbox implements AfterViewInit, OnDestroy, MDCSelectionCon
     },
   };
 
-  constructor(@Inject(DOCUMENT) private _doc: any) {}
+  @Input('aria-label') ariaLabel: string = '';
+
+  @Input('aria-labelledby') ariaLabelledby: string | null = null;
+
+  private _uniqueId: string = `mat-mdc-checkbox-${++nextUniqueId}`;
+  @Input() id: string = this._uniqueId;
+  get inputId(): string { return `${this.id || this._uniqueId}-input`; }
+
+  @Input()
+  get required(): boolean { return this._required; }
+  set required(value: boolean) { this._required = coerceBooleanProperty(value); }
+  private _required: boolean;
+
+  @Input() labelPosition: 'before' | 'after' = 'after';
+
+  @Input() name: string | null = null;
+
+  @Input() value: string;
+
+  @Input()
+  get checked() {
+    return this._checked;
+  }
+  set checked(checked) {
+    if (this._checked != checked) {
+      this._checked = checked;
+      this._cdr.markForCheck();
+    }
+  }
+  private _checked: boolean;
+
+  @Input()
+  get disabled() {
+    return this._disabled;
+  }
+  set disabled(disabled) {
+    const newValue = coerceBooleanProperty(disabled);
+    if (newValue != this._disabled) {
+      this._disabled = newValue;
+      this._cdr.markForCheck();
+    }
+  }
+  private _disabled = false;
+
+  @Input()
+  get indeterminate(): boolean {
+    return this._indeterminate;
+  }
+  set indeterminate(indeterminate: boolean) {
+    const newValue = coerceBooleanProperty(indeterminate);
+    if (newValue != this._indeterminate) {
+      this._indeterminate = newValue;
+      this._cdr.markForCheck();
+    }
+  }
+  private _indeterminate = false;
+
+  tabIndex = 0;
+
+  constructor(@Inject(DOCUMENT) private _doc: any,
+              @Attribute('tabindex') tabIndex: string,
+              private _cdr: ChangeDetectorRef) {
+    this.tabIndex = parseInt(tabIndex) || 0;
+  }
 
   ngAfterViewInit() {
     this._checkboxFoundation = new MDCCheckboxFoundation(this._checkboxAdapter);
@@ -104,7 +178,7 @@ export class MatMdcCheckbox implements AfterViewInit, OnDestroy, MDCSelectionCon
 
     // Initial sync with DOM
     this._handleChange = () => this._checkboxFoundation.handleChange();
-    this._handleAnimationEnd= () => this._checkboxFoundation.handleAnimationEnd();
+    this._handleAnimationEnd = () => this._checkboxFoundation.handleAnimationEnd();
     this.nativeCheckbox.nativeElement.addEventListener('change', this._handleChange);
     this.checkbox.nativeElement.addEventListener(
         getCorrectEventName(window, 'animationend'), this._handleAnimationEnd);
@@ -117,27 +191,6 @@ export class MatMdcCheckbox implements AfterViewInit, OnDestroy, MDCSelectionCon
         getCorrectEventName(window, 'animationend'), this._handleAnimationEnd);
     this._checkboxFoundation.destroy();
     this._formFieldFoundation.destroy();
-  }
-
-  get checked() {
-    return this.nativeCheckbox.nativeElement.checked;
-  }
-  set checked(checked) {
-    this.nativeCheckbox.nativeElement.checked = checked;
-  }
-
-  get indeterminate(): boolean {
-    return this.nativeCheckbox.nativeElement.indeterminate;
-  }
-  set indeterminate(indeterminate: boolean) {
-    this.nativeCheckbox.nativeElement.indeterminate = indeterminate;
-  }
-
-  get disabled() {
-    return this.nativeCheckbox.nativeElement.disabled;
-  }
-  set disabled(disabled) {
-    this._checkboxFoundation.setDisabled(disabled);
   }
 
   get ripple() {
