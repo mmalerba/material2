@@ -15,12 +15,17 @@ import {
   ChangeDetectorRef,
   Component,
   ElementRef,
+  EventEmitter,
+  forwardRef,
   Inject,
   Input,
   OnDestroy,
+  Output,
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
+import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
+import {MatCheckboxChange} from '@angular/material';
 import {getCorrectEventName} from '@material/animation';
 import {MDCCheckboxAdapter, MDCCheckboxFoundation} from '@material/checkbox';
 import {MDCFormFieldAdapter, MDCFormFieldFoundation} from '@material/form-field';
@@ -34,6 +39,12 @@ import {MDCSelectionControl} from '@material/selection-control';
 
 let nextUniqueId = 0;
 
+export const MAT_MDC_CHECKBOX_CONTROL_VALUE_ACCESSOR: any = {
+  provide: NG_VALUE_ACCESSOR,
+  useExisting: forwardRef(() => MatMdcCheckbox),
+  multi: true
+};
+
 @Component({
   moduleId: module.id,
   selector: 'mat-mdc-checkbox',
@@ -43,11 +54,13 @@ let nextUniqueId = 0;
     '[id]': 'id',
     '[attr.tabindex]': 'null',
   },
+  providers: [MAT_MDC_CHECKBOX_CONTROL_VALUE_ACCESSOR],
   exportAs: 'matCheckbox',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class MatMdcCheckbox implements AfterViewInit, OnDestroy, MDCSelectionControl {
+export class MatMdcCheckbox implements AfterViewInit, OnDestroy, MDCSelectionControl,
+    ControlValueAccessor {
   @ViewChild('formField') formField: ElementRef<HTMLElement>;
   @ViewChild('checkbox') checkbox: ElementRef<HTMLElement>;
   @ViewChild('nativeCheckbox') nativeCheckbox: ElementRef<HTMLInputElement>;
@@ -156,11 +169,20 @@ export class MatMdcCheckbox implements AfterViewInit, OnDestroy, MDCSelectionCon
     if (newValue != this._indeterminate) {
       this._indeterminate = newValue;
       this._cdr.markForCheck();
+      this.indeterminateChange.next(newValue);
     }
   }
   private _indeterminate = false;
 
   tabIndex = 0;
+
+  @Output() readonly change: EventEmitter<MatCheckboxChange> =
+      new EventEmitter<MatCheckboxChange>();
+
+  @Output() readonly indeterminateChange: EventEmitter<boolean> = new EventEmitter<boolean>();
+
+  private _cvaOnChange = (_: boolean) => {};
+  private _cvaOnTouch = () => {};
 
   constructor(@Inject(DOCUMENT) private _doc: any,
               @Attribute('tabindex') tabIndex: string,
@@ -226,5 +248,40 @@ export class MatMdcCheckbox implements AfterViewInit, OnDestroy, MDCSelectionCon
     };
     const foundation = new MDCRippleFoundation(rippleAdapter);
     return new MDCRipple(this.checkbox.nativeElement, foundation);
+  }
+
+  _onNativeChange(event: Event) {
+    this._checked = this.nativeCheckbox.nativeElement.checked;
+    this._indeterminate = this.nativeCheckbox.nativeElement.indeterminate;
+
+    // Prevent the native change event from escaping the component boundary
+    event.stopPropagation();
+    // Dispatch our own event instead
+    const newEvent = new MatCheckboxChange();
+    newEvent.source = this as any;
+    newEvent.checked = this.checked;
+    this.change.next(newEvent);
+    this._cvaOnChange(this.checked);
+    this.indeterminateChange.next(false);
+  }
+
+  registerOnChange(fn: (checked: boolean) => {}): void {
+    this._cvaOnChange = fn;
+  }
+
+  registerOnTouched(fn: () => {}): void {
+    this._cvaOnTouch = fn;
+  }
+
+  setDisabledState(isDisabled: boolean): void {
+    this.disabled = isDisabled;
+  }
+
+  writeValue(value: any): void {
+    this.checked = !!value;
+  }
+
+  _onNativeBlur() {
+    Promise.resolve().then(() => this._cvaOnTouch());
   }
 }
