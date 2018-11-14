@@ -1,11 +1,21 @@
 <div #formField
-     class="mdc-form-field">
+     class="mdc-form-field"
+     [class.mdc-form-field--align-end]="labelPosition == 'before'">
   <div #checkbox
        class="mdc-checkbox">
     <input #nativeCheckbox
            type="checkbox"
            class="mdc-checkbox__native-control"
-           id="checkbox-1"/>
+           [attr.aria-label]="ariaLabel || null"
+           [attr.aria-labelledby]="ariaLabelledby"
+           [attr.name]="name"
+           [attr.value]="value"
+           [checked]="checked"
+           [disabled]="disabled"
+           [indeterminate]="indeterminate"
+           [id]="inputId"
+           [required]="required"
+           [tabIndex]="tabIndex"/>
     <div class="mdc-checkbox__background">
       <svg class="mdc-checkbox__checkmark"
            viewBox="0 0 24 24">
@@ -16,5 +26,8 @@
       <div class="mdc-checkbox__mixedmark"></div>
     </div>
   </div>
-  <label #label for="checkbox-1">Checkbox 1</label>
+  <label #label
+         [for]="inputId">
+    <ng-content></ng-content>
+  </label>
 </div>
