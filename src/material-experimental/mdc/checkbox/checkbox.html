@@ -1,6 +1,6 @@
 <div #formField
      class="mdc-form-field"
-     [class.mdc-form-field--align-end]="labelPosition == 'before'">
+     [class.mdc-form-field--align-end]="labelPosition == 'before'" (change)="_onNativeChange($event)">
   <div #checkbox
        class="mdc-checkbox">
     <input #nativeCheckbox
@@ -15,7 +15,8 @@
            [indeterminate]="indeterminate"
            [id]="inputId"
            [required]="required"
-           [tabIndex]="tabIndex"/>
+           [tabIndex]="tabIndex"
+           (blur)="_onNativeBlur()"/>
     <div class="mdc-checkbox__background">
       <svg class="mdc-checkbox__checkmark"
            viewBox="0 0 24 24">
