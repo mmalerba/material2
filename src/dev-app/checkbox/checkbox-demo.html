@@ -4,6 +4,7 @@
   <mat-checkbox [(ngModel)]="mdcChecked">checked?</mat-checkbox><br>
   <mat-checkbox [(ngModel)]="mdcDisabled">disabled?</mat-checkbox><br>
   <mat-checkbox [(ngModel)]="mdcIndeterminate">indeterminate?</mat-checkbox><br>
+  <mat-checkbox [(ngModel)]="mdcDisableRipple">disable ripple?</mat-checkbox><br>
   <mat-form-field>
     <mat-label>aria-label</mat-label>
     <input matInput [(ngModel)]="mdcLabel">
@@ -27,6 +28,14 @@
     <mat-label>value</mat-label>
     <input matInput [(ngModel)]="mdcValue">
   </mat-form-field><br>
+  <mat-form-field>
+    <mat-label>color</mat-label>
+    <mat-select [(ngModel)]="mdcColor">
+      <mat-option value="primary">primary</mat-option>
+      <mat-option value="accent">accent</mat-option>
+      <mat-option value="warn">warn</mat-option>
+    </mat-select>
+  </mat-form-field><br>
 
   <br>
   <h4>Result</h4>
@@ -35,6 +44,8 @@
       [labelPosition]="mdcLabelAfter ? 'after' : 'before'"
       [aria-label]="mdcLabel"
       [aria-labelledby]="mdcLabelledBy"
+      [color]="mdcColor"
+      [disableRipple]="mdcDisableRipple"
       [id]="mdcId"
       [name]="mdcName"
       [value]="mdcValue"
@@ -50,6 +61,8 @@
       [labelPosition]="mdcLabelAfter ? 'after' : 'before'"
       [aria-label]="mdcLabel"
       [aria-labelledby]="mdcLabelledBy"
+      [color]="mdcColor"
+      [disableRipple]="mdcDisableRipple"
       [id]="mdcId"
       [name]="mdcName"
       [value]="mdcValue"
