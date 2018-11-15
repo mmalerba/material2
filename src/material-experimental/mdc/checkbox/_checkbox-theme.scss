@@ -63,14 +63,49 @@
       text-icon-on-dark: mdc-theme-ink-color-for-fill_(icon, dark)
   ) !global;
 
-  .mdc-checkbox {
-    @include mdc-states($mdc-checkbox-baseline-theme-color);
-  }
+  $mdc-checkbox-mark-color: mdc-theme-prop-value(on-secondary) !global;
+  $mdc-checkbox-border-color: rgba(mdc-theme-prop-value(on-surface), .54) !global;
+  $mdc-checkbox-disabled-color: rgba(mdc-theme-prop-value(on-surface), .26) !global;
+  $mdc-checkbox-baseline-theme-color: secondary !global;
 
   @include mdc-checkbox-ink-color($mdc-checkbox-mark-color);
   @include mdc-checkbox-focus-indicator-color($mdc-checkbox-baseline-theme-color);
   @include mdc-checkbox-container-colors;
   @include mdc-checkbox-disabled-container-color_;
+
+  mat-mdc-checkbox {
+    &.mat-primary {
+      @include mdc-checkbox-ink-color(mdc-theme-prop-value(on-primary));
+      @include mdc-checkbox-focus-indicator-color(primary);
+      @include mdc-checkbox-container-colors(
+          $marked-stroke-color: primary,
+          $marked-fill-color: primary);
+
+      .mdc-checkbox {
+        @include mdc-states(primary);
+      }
+    }
+
+    &.mat-warn {
+      @include mdc-checkbox-ink-color(mdc-theme-prop-value(on-error));
+      @include mdc-checkbox-focus-indicator-color(error);
+      @include mdc-checkbox-container-colors(
+          $marked-stroke-color: error,
+          $marked-fill-color: error);
+
+      .mdc-checkbox {
+        @include mdc-states(error);
+      }
+    }
+  }
+
+  .mdc-checkbox {
+    @include mdc-states($mdc-checkbox-baseline-theme-color);
+  }
+
+  .mdc-form-field {
+    @include mdc-theme-prop(color, text-primary-on-background);
+  }
 }
 
 @mixin mat-checkbox-typography($config) {
