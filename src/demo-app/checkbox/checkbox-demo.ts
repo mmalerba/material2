@@ -80,6 +80,8 @@ export class CheckboxDemo {
   mdcId = null;
   mdcName = null;
   mdcValue = null;
+  mdcColor = 'primary';
+  mdcDisableRipple = false;
 
   isIndeterminate: boolean = false;
   isChecked: boolean = false;
