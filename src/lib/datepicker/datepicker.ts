@@ -49,10 +49,10 @@ import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {merge, Subject, Subscription} from 'rxjs';
 import {filter, take} from 'rxjs/operators';
 import {MatCalendar} from './calendar';
+import {MatCalendarCellCssClasses} from './calendar-body';
 import {matDatepickerAnimations} from './datepicker-animations';
 import {createMissingDateImplError} from './datepicker-errors';
 import {MatDatepickerInput} from './datepicker-input';
-import {MatCalendarCellCssClasses} from './calendar-body';
 
 /** Used to generate a unique ID for each datepicker instance. */
 let datepickerUid = 0;
@@ -132,9 +132,7 @@ export class MatDatepickerContent<D> extends _MatDatepickerContentMixinBase
 // TODO(mmalerba): We use a component instead of a directive here so the user can use implicit
 // template reference variables (e.g. #d vs #d="matDatepicker"). We can change this to a directive
 // if angular adds support for `exportAs: '$implicit'` on directives.
-/**
- * Component responsible for managing the datepicker popup/dialog.
- */
+/** Component responsible for managing the datepicker popup/dialog. */
 @Component({
   moduleId: module.id,
   selector: 'mat-datepicker',
@@ -238,9 +236,9 @@ export class MatDatepicker<D> implements OnDestroy, CanColor {
   id: string = `mat-datepicker-${datepickerUid++}`;
 
   /** The currently selected date. */
-  get _selected(): D | null { return this._dateSelection.getSelection(); }
+  get _selected(): D | null { return this._selectionModel.getSelection(); }
   set _selected(value: D | null) {
-    this._dateSelection.setSelection(value);
+    this._selectionModel.setSelection(value);
   }
 
   /** The minimum selectable date. */
@@ -288,7 +286,7 @@ export class MatDatepicker<D> implements OnDestroy, CanColor {
               private _overlay: Overlay,
               private _ngZone: NgZone,
               private _viewContainerRef: ViewContainerRef,
-              @Inject(MatDateSelectionModel) readonly _dateSelection:
+              @Inject(MatDateSelectionModel) readonly _selectionModel:
                   MatSingleDateSelectionModel<D>,
               @Inject(MAT_DATEPICKER_SCROLL_STRATEGY) scrollStrategy: any,
               @Optional() private _dateAdapter: DateAdapter<D>,
@@ -300,8 +298,8 @@ export class MatDatepicker<D> implements OnDestroy, CanColor {
 
     this._scrollStrategy = scrollStrategy;
 
-    this._subscriptions.add(_dateSelection.selectionChange.subscribe(() => {
-      this._selectedChanged.next(_dateSelection.getSelection() || undefined);
+    this._subscriptions.add(_selectionModel.selectionChange.subscribe(() => {
+      this._selectedChanged.next(_selectionModel.getSelection() || undefined);
     }));
   }
 
@@ -318,9 +316,9 @@ export class MatDatepicker<D> implements OnDestroy, CanColor {
 
   /** Selects the given date */
   select(date: D): void {
-    let oldValue = this._dateSelection.getSelection();
+    const oldValue = this._selectionModel.getSelection();
     if (!this._dateAdapter.sameDate(oldValue, date)) {
-      this._dateSelection.add(date);
+      this._selectionModel.add(date);
     }
   }
 

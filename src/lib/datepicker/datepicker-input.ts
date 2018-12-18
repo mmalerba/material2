@@ -115,11 +115,11 @@ export class MatDatepickerInput<D> implements ControlValueAccessor, OnDestroy, V
       this._selectionModel.ngOnDestroy();
     }
 
-    this._selectionModel = this._datepicker._dateSelection;
+    this._selectionModel = this._datepicker._selectionModel;
 
     this._formatValue(this._selectionModel.getSelection());
 
-    this._datepickerSubscription = this._datepicker._dateSelection.selectionChange.subscribe(() => {
+    this._datepickerSubscription = this._datepicker._selectionModel.selectionChange.subscribe(() => {
       this._formatValue(this._selectionModel.getSelection());
       this._cvaOnChange(this._selectionModel.getSelection());
       this._onTouched();
