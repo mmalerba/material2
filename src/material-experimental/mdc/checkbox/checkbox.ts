@@ -311,4 +311,8 @@ export class MatCheckbox implements AfterViewInit, OnDestroy, MDCSelectionContro
   _onNativeBlur() {
     Promise.resolve().then(() => this._cvaOnTouch());
   }
+
+  focus() {
+    this.nativeCheckbox.nativeElement.focus();
+  }
 }

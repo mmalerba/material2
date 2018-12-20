@@ -6,4 +6,10 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
+
 export * from './public-api';
+export {
+  MatCheckboxChange,
+  MAT_CHECKBOX_CLICK_ACTION,
+  MatCheckboxClickAction
+} from '@angular/material';
