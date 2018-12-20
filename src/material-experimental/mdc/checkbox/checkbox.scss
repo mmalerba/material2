@@ -1,7 +1,7 @@
-mat-mdc-checkbox label:empty {
+.mat-mdc-checkbox label:empty {
   display: none;
 }
 
-mat-mdc-checkbox.mat-ripple-disabled {
+.mat-mdc-checkbox.mat-ripple-disabled {
   // TODO: override checkbox's CSS ripple
 }

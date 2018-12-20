@@ -38,13 +38,13 @@ import {MDCSelectionControl} from '@material/selection-control';
 
 let nextUniqueId = 0;
 
-export const MAT_MDC_CHECKBOX_CONTROL_VALUE_ACCESSOR: any = {
+export const MAT_CHECKBOX_CONTROL_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
-  useExisting: forwardRef(() => MatMdcCheckbox),
+  useExisting: forwardRef(() => MatCheckbox),
   multi: true
 };
 
-export class MatMdcRipple extends MDCRipple {
+export class MatRipple extends MDCRipple {
   disabled = false;
 
   activate() {
@@ -56,22 +56,25 @@ export class MatMdcRipple extends MDCRipple {
 
 @Component({
   moduleId: module.id,
-  selector: 'mat-mdc-checkbox',
+  selector: 'mat-checkbox',
   templateUrl: 'checkbox.html',
   styleUrls: ['checkbox.css'],
   host: {
     '[attr.id]': 'id || null',
+    // Both sets of CSS may be present, so include this class as a way of targeting styles at the
+    // mdc wrapped version explicitly.
+    '[class.mat-mdc-checkbox]': 'true',
     '[class.mat-primary]': 'color == "primary"',
     '[class.mat-accent]': 'color == "accent"',
     '[class.mat-warn]': 'color == "warn"',
     '[class.mat-ripple-disabled]': 'disableRipple',
   },
-  providers: [MAT_MDC_CHECKBOX_CONTROL_VALUE_ACCESSOR],
+  providers: [MAT_CHECKBOX_CONTROL_VALUE_ACCESSOR],
   exportAs: 'matCheckbox',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class MatMdcCheckbox implements AfterViewInit, OnDestroy, MDCSelectionControl,
+export class MatCheckbox implements AfterViewInit, OnDestroy, MDCSelectionControl,
     ControlValueAccessor {
   @ViewChild('formField') formField: ElementRef<HTMLElement>;
   @ViewChild('checkbox') checkbox: ElementRef<HTMLElement>;
@@ -80,7 +83,7 @@ export class MatMdcCheckbox implements AfterViewInit, OnDestroy, MDCSelectionCon
 
   private _checkboxFoundation: MDCCheckboxFoundation;
   private _formFieldFoundation: MDCFormFieldFoundation;
-  private _ripple: MatMdcRipple;
+  private _ripple: MatRipple;
   private _handleChange: EventListener;
   private _handleAnimationEnd: EventListener;
 
@@ -133,6 +136,7 @@ export class MatMdcCheckbox implements AfterViewInit, OnDestroy, MDCSelectionCon
 
   @Input('aria-labelledby') ariaLabelledby: string | null = null;
 
+  // Use mat-mdc- prefix to avoid id collisions with the old checkbox.
   private _uniqueId: string = `mat-mdc-checkbox-${++nextUniqueId}`;
   @Input() id: string = this._uniqueId;
   get inputId(): string { return `${this.id || this._uniqueId}-input`; }
@@ -270,7 +274,7 @@ export class MatMdcCheckbox implements AfterViewInit, OnDestroy, MDCSelectionCon
           this.nativeCheckbox.nativeElement.removeEventListener(type, handler),
     };
     const foundation = new MDCRippleFoundation(rippleAdapter);
-    return new MatMdcRipple(this.checkbox.nativeElement, foundation);
+    return new MatRipple(this.checkbox.nativeElement, foundation);
   }
 
   _onNativeChange(event: Event) {

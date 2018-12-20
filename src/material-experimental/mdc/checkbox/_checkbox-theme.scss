@@ -73,7 +73,7 @@
   @include mdc-checkbox-container-colors;
   @include mdc-checkbox-disabled-container-color_;
 
-  mat-mdc-checkbox {
+  .mat-mdc-checkbox {
     &.mat-primary {
       @include mdc-checkbox-ink-color(mdc-theme-prop-value(on-primary));
       @include mdc-checkbox-focus-indicator-color(primary);

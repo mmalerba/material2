@@ -8,11 +8,11 @@
 
 import {NgModule} from '@angular/core';
 import {MatCommonModule} from '@angular/material/core';
-import {MatMdcCheckbox} from './checkbox';
+import {MatCheckbox} from './checkbox';
 
 @NgModule({
   imports: [MatCommonModule],
-  exports: [MatMdcCheckbox, MatCommonModule],
-  declarations: [MatMdcCheckbox],
+  exports: [MatCheckbox, MatCommonModule],
+  declarations: [MatCheckbox],
 })
-export class MatMdcCheckboxModule {}
+export class MatCheckboxModule {}
