@@ -12,18 +12,18 @@ import {FormsModule} from '@angular/forms';
 import {
   MatButtonModule,
   MatExpansionModule,
-  MatCheckboxModule,
   MatFormFieldModule,
   MatIconModule,
   MatInputModule,
   MatProgressBarModule,
   MatTreeModule
 } from '@angular/material';
-import {TreeDemo} from './tree-demo';
-import {ChecklistTreeDemo} from './checklist-tree-demo/checklist-tree-demo';
+import {MatCheckboxModule} from '@angular/material-experimental';
 import {ChecklistNestedTreeDemo} from './checklist-tree-demo/checklist-nested-tree-demo';
+import {ChecklistTreeDemo} from './checklist-tree-demo/checklist-tree-demo';
 import {DynamicTreeDemo} from './dynamic-tree-demo/dynamic-tree-demo';
 import {LoadmoreTreeDemo} from './loadmore-tree-demo/loadmore-tree-demo';
+import {TreeDemo} from './tree-demo';
 
 
 @NgModule({
