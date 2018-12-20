@@ -59,7 +59,6 @@ import {
   MatTooltipModule,
   MatTreeModule
 } from '@angular/material';
-import {MatMdcCheckboxModule} from '@angular/material-experimental';
 
 
 /**
@@ -117,7 +116,6 @@ import {MatMdcCheckboxModule} from '@angular/material-experimental';
     ExperimentalScrollingModule,
     DialogModule,
     DragDropModule,
-    MatMdcCheckboxModule,
   ]
 })
 export class DevAppMaterialModule {}
