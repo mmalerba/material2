@@ -68,9 +68,9 @@ export class CdkTableInlineEdit<T> implements OnDestroy {
   }
 }
 
-@Directive({selector: '[cdkInlineEditCellOverlay]'})
-export class CdkTableInlineEditCellOverlay implements OnDestroy {
-  @Input() cdkInlineEditCellOverlay: TemplateRef<any>|null = null;
+@Directive({selector: '[cdkCellOverlay]'})
+export class CdkTableCellOverlay implements OnDestroy {
+  @Input() cdkCellOverlay: TemplateRef<any>|null = null;
   
   protected readonly opened = new Subject<boolean>();
   protected readonly activity = new Subject<void>();
@@ -81,7 +81,6 @@ export class CdkTableInlineEditCellOverlay implements OnDestroy {
   constructor(
       protected readonly elementRef: ElementRef,
       protected readonly overlay: Overlay,
-      @Inject(CDK_INLINE_EDIT_OPENED) protected readonly inlineEditOpened: Subject<boolean>,
       ngZone: NgZone) {
     
     ngZone.runOutsideAngular(() => {
@@ -126,18 +125,22 @@ export class CdkTableInlineEditCellOverlay implements OnDestroy {
   }
   
   protected connectEvents(elementRef: ElementRef) {
-    const enter = fromEvent(elementRef.nativeElement!, 'mouseenter').pipe(
-        mapTo(true));
+    const enter = fromEvent(elementRef.nativeElement!, 'mouseenter')
+        .pipe(mapTo(true));
     enter.subscribe(this.opened);
     
     // Optimization: Defer registration of other mouse events until first enter.
-    enter.pipe(first()).subscribe(() => {
-      fromEvent(elementRef.nativeElement!, 'mouseleave').pipe(
-          mapTo(false))
-          .subscribe(this.opened);
-      fromEvent(elementRef.nativeElement!, 'mousemove')
-          .subscribe(this.activity);
-    });
+    enter
+        .pipe(
+            takeUntil(this.destroyed),
+            first(),)
+        .subscribe(() => {
+          fromEvent(elementRef.nativeElement!, 'mouseleave')
+              .pipe(mapTo(false))
+              .subscribe(this.opened);
+          fromEvent(elementRef.nativeElement!, 'mousemove')
+              .subscribe(this.activity);
+        });
   }
 }
 
