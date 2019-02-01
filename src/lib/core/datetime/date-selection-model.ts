@@ -8,7 +8,7 @@
 
 import {FactoryProvider, Injectable, OnDestroy, Optional, SkipSelf} from '@angular/core';
 import {Observable, Subject} from 'rxjs';
-import {filter} from 'rxjs/operators';
+import {distinctUntilChanged, filter} from 'rxjs/operators';
 import {DateAdapter} from './date-adapter';
 
 
@@ -46,13 +46,13 @@ export abstract class MatDateSelectionModel<D, S = unknown> implements OnDestroy
 
   /** Emits when the selected value has changed (de-duped). */
   // TODO: update call site
-  // TODO: consider de-duping with distinctUntilChanged
-  selectionChange: Observable<DateSelectionChangeEvent<S>> = this.selectionSubject.pipe();
+  selectionChange: Observable<DateSelectionChangeEvent<S>> = this.selectionSubject.pipe(
+      distinctUntilChanged((e1, e2) => this.isSameSelection(e1.value, e2.value)));
 
   /** Emits when the selected value has changed due to user interaction (de-duped). */
-  // TODO: consider de-duping with distinctUntilChanged
-  userSelectionChange: Observable<DateSelectionChangeEvent<S>> =
-      this.selectionSubject.pipe(filter(e => e.source != PROGRAM));
+  userSelectionChange: Observable<DateSelectionChangeEvent<S>> = this.selectionSubject.pipe(
+      filter(e => e.source != PROGRAM),
+      distinctUntilChanged((e1, e2) => this.isSameSelection(e1.value, e2.value)));
 
   protected selection: S | null = null;
 
@@ -101,8 +101,9 @@ export class MatSingleDateSelectionModel<D> extends MatDateSelectionModel<D, D> 
   }
 
   /** Sets the current selection. */
-  setSelection(date: D | null, _source: DateSelectionChangeSource = PROGRAM) {
+  setSelection(date: D | null, source: DateSelectionChangeSource = PROGRAM) {
     this.selection = date;
+    this.selectionSubject.next({value: this.selection, source});
   }
 
   /** Gets the current selection. */
@@ -115,10 +116,7 @@ export class MatSingleDateSelectionModel<D> extends MatDateSelectionModel<D, D> 
    * simply replacing the current selection with the given selection.
    */
   add(date: D, source: DateSelectionChangeSource = PROGRAM) {
-    if (!this.adapter.sameDate(date, this.selection)) {
-      this.selection = date;
-      this.selectionSubject.next({value: this.selection, source});
-    }
+    this.setSelection(date, source);
   }
 
   clone(): MatSingleDateSelectionModel<D> {
@@ -173,8 +171,9 @@ export class MatRangeDateSelectionModel<D> extends MatDateSelectionModel<D, Date
   }
 
   /** Sets the current selection. */
-  setSelection(range: DateRange<D> | null, _source: DateSelectionChangeSource = PROGRAM) {
+  setSelection(range: DateRange<D> | null, source: DateSelectionChangeSource = PROGRAM) {
     this.selection = range && {...range};
+    this.selectionSubject.next({value: this.selection, source});
   }
 
   /** Gets the current selection. */
@@ -191,14 +190,12 @@ export class MatRangeDateSelectionModel<D> extends MatDateSelectionModel<D, Date
    */
   add(date: D, source: DateSelectionChangeSource = PROGRAM): void {
     if (!this.selection || !this.selection.start) {
-      this.selection = {end: null, ...this.selection, start: date};
+      this.setSelection({end: null, ...this.selection, start: date}, source);
     } else if (!this.selection.end) {
-      this.selection = {...this.selection, end: date};
+      this.setSelection({...this.selection, end: date}, source);
     } else {
-      this.selection = {start: date, end: null};
+      this.setSelection({start: date, end: null}, source);
     }
-
-    this.selectionSubject.next({value: this.selection, source});
   }
 
   clone(): MatRangeDateSelectionModel<D> {
