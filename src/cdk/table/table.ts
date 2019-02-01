@@ -17,6 +17,7 @@ import {
   Directive,
   ElementRef,
   EmbeddedViewRef,
+  HostListener,
   Input,
   isDevMode,
   IterableChangeRecord,
@@ -147,6 +148,10 @@ export interface RenderRow<T> {
   dataIndex: number;
   rowDef: CdkRowDef<T>;
 }
+
+/*export class CellEvents {
+  readonly
+}*/
 
 /**
  * A data table that can render a header row, data rows, and a footer row.
