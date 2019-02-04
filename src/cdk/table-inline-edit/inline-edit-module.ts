@@ -17,7 +17,6 @@ const EXPORTED_DECLARATIONS = [
 @NgModule({
 /*  imports: [CommonModule],*/
   exports: EXPORTED_DECLARATIONS,
-  declarations: EXPORTED_DECLARATIONS
-
+  declarations: EXPORTED_DECLARATIONS,
 })
 export class CdkTableInlineEditModule { }

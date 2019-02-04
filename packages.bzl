@@ -16,6 +16,7 @@ CDK_PACKAGES = [
   "scrolling",
   "stepper",
   "table",
+  "table-inline-edit",
   "text-field",
   "tree",
 ]

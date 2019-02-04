@@ -6,34 +6,40 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
-import {Directive, ElementRef, HostListener, Inject, Injectable, Input, OnDestroy, Optional, NgZone, TemplateRef} from '@angular/core';
+import {AfterViewInit, Directive, ElementRef, Inject, Injectable, InjectionToken, Input, OnDestroy, Optional, NgZone, TemplateRef, ViewContainerRef} from '@angular/core';
 import {Overlay, OverlayRef} from '@angular/cdk/overlay';
-import {BehaviorSubject, fromEvent, Observable, ReplaySubject, Subject, Subscription} from 'rxjs';
-import {audit, debounceTime, filter, first, mapTo, takeUntil, throttle} from 'rxjs/operators';
+import {TemplatePortal} from '@angular/cdk/portal';
+import {BehaviorSubject, fromEvent, Observable, ReplaySubject, Subject} from 'rxjs';
+import {audit, debounceTime, distinctUntilChanged, first, mapTo, takeUntil} from 'rxjs/operators';
 
 const HOVER_DELAY_MS = 50;
 
 export const CDK_INLINE_EDIT_OPENED = new InjectionToken<Subject<boolean>>('cdk_ieo');
 export const CDK_ROW_HOVER = new InjectionToken<HoverState>('cdk_rh');
 
+export function booleanSubjectFactory() {
+  return new BehaviorSubject(false);
+}
+
 @Injectable()
 export class HoverState {
   readonly hovered = new BehaviorSubject(false);
   
-  readonly activities = new Subject<void>();
+  readonly activities = new Subject<unknown>();
   readonly hoverEvents = new Subject<boolean>();
 }
 
 @Directive({
   selector: '[cdkInlineEdit]',
   host: {
-    'tabIndex': 0,
+    'tabIndex': '0',
+    '(keypress.enter)': 'opened.next(true)',
     // TODO: aria something?
-  }
+  },
   providers: [
     {
       provide: CDK_INLINE_EDIT_OPENED,
-      useFactory: () => new BehaviorSubject<boolean>(false),
+      useFactory: booleanSubjectFactory,
     }
   ]
 })
@@ -44,10 +50,11 @@ export class CdkTableInlineEdit<T> implements OnDestroy {
 
   constructor(
       readonly elementRef: ElementRef,
-      overlay: Overlay
-      @Inject(CDK_INLINE_EDIT_OPENED) protected readonly opened: Subject<boolean>) {
+      overlay: Overlay,
+      @Inject(CDK_INLINE_EDIT_OPENED) readonly opened: Subject<boolean>,
+      viewContainerRef: ViewContainerRef,) {
     this.opened.pipe(distinctUntilChanged()).subscribe((open) => {
-      if (open) {
+      if (open && this.cdkInlineEdit) {
         if (!this.overlayRef) {
           // TODO: work out details of positioning relative to cell.
           this.overlayRef = overlay.create({
@@ -71,7 +78,7 @@ export class CdkTableInlineEdit<T> implements OnDestroy {
         // version also.
         
         // TODO: Is it better to create a portal once and reuse it?
-        this.overlayRef.attach(new TemplatePortal(this.cdkInlineEdit));
+        this.overlayRef.attach(new TemplatePortal(this.cdkInlineEdit, viewContainerRef));
       } else if (this.overlayRef) {
         this.overlayRef.detach();
         
@@ -89,11 +96,6 @@ export class CdkTableInlineEdit<T> implements OnDestroy {
       this.overlayRef.dispose();
     }
   }
-
-  @HostListener('keypress.enter')
-  onEnter() {
-    this.opened.next(true);
-  }
 }
 
 export abstract class Destroyable implements OnDestroy {
@@ -107,49 +109,54 @@ export abstract class Destroyable implements OnDestroy {
 
 @Directive({
   selector: '[cdkRowHover]',
-  providers: providers: [
+  providers: [
     {
       provide: CDK_ROW_HOVER,
       useClass: HoverState,
     }
   ]
 })
-export class CdkTableRowHover extends Destroyable {
+export class CdkTableRowHover extends Destroyable implements AfterViewInit {
   constructor(
-      elementRef: ElementRef,
-      @Inject(CDK_HOVER) protected readonly hoverState: HoverState,
-      ngZone: NgZone) {
-    connectHoverEvents(elementRef, this.destroyed, ngZone, hoverState);
+      protected readonly elementRef: ElementRef,
+      @Inject(CDK_ROW_HOVER) protected readonly hoverState: HoverState,
+      protected readonly ngZone: NgZone) {
+    super();
+  }
+  
+  ngAfterViewInit() {
+    connectHoverEvents(this.elementRef.nativeElement!, this.destroyed, this.ngZone, this.hoverState);
   }
 }
 
 @Directive({selector: '[cdkCellOverlay]'})
-export class CdkTableCellOverlay extends Destroyable {
+export class CdkTableCellOverlay extends Destroyable implements AfterViewInit {
   @Input() cdkCellOverlay: TemplateRef<any>|null = null;
-  
-  protected readonly hoverState: HoverState;
 
   protected overlayRef?: OverlayRef;
   
   constructor(
-      elementRef: ElementRef,
-      @Optional() @Inject(CDK_ROW_HOVER) rowHoverState: HoverState,
-      overlay: Overlay,
-      ngZone: NgZone) {
-    if (rowHoverState) {
-      this.hoverState = rowHoverState;
-    } else {
+      protected readonly elementRef: ElementRef,
+      @Optional() @Inject(CDK_ROW_HOVER) protected hoverState: HoverState,
+      protected readonly overlay: Overlay,
+      protected readonly viewContainerRef: ViewContainerRef,
+      protected readonly ngZone: NgZone) {
+    super();
+  }
+  
+  ngAfterViewInit() {
+    if (!this.hoverState) {
       this.hoverState = new HoverState();
-      connectHoverEvents(elementRef, this.destroyed, ngZone, hoverState);
+      connectHoverEvents(this.elementRef.nativeElement!, this.destroyed, this.ngZone, this.hoverState);
     }
     
     this.hoverState.hovered
         .subscribe((isHovered) => {
-            if (isHovered) {
+            if (isHovered && this.cdkCellOverlay) {
               if (!this.overlayRef) {
                 // TODO: work out details of positioning over cell.
-                this.overlayRef = overlay.create({
-                  positionStrategy: overlay.position().flexibleConnectedTo(elementRef)
+                this.overlayRef = this.overlay.create({
+                  positionStrategy: this.overlay.position().flexibleConnectedTo(this.elementRef)
                       .withGrowAfterOpen()
                       .withPositions([{
                         originX: 'end',
@@ -157,14 +164,16 @@ export class CdkTableCellOverlay extends Destroyable {
                         overlayX: 'end',
                         overlayY: 'center',
                       }]),
-                  scrollStrategy: overlay.scrollStrategies.reposition({autoClose: true}),
+                  scrollStrategy: this.overlay.scrollStrategies.reposition({autoClose: true}),
                 });
                 
-                connectHoverEvents(this.overlayRef.overlayElement(), this.destroyed, ngZone, hoverState);
+                connectHoverEvents(this.overlayRef.overlayElement, this.destroyed, this.ngZone, this.hoverState);
               }
       
+              // TODO: handle unrelated detachments? Or maybe this wont need auto close.
+      
               // TODO: Is it better to create a portal once and reuse it?
-              this.overlayRef.attach(new TemplatePortal(this.cdkInlineEditCellOverlay));
+              this.overlayRef.attach(new TemplatePortal(this.cdkCellOverlay, this.viewContainerRef));
             } else if (this.overlayRef) {
               this.overlayRef.detach();
             }
@@ -173,9 +182,9 @@ export class CdkTableCellOverlay extends Destroyable {
 }
 
 function connectHoverEvents(
-    elementRef: ElementRef,
+    element: HTMLElement,
     destroyed: Observable<void>,
-    ngZone: ngZone,
+    ngZone: NgZone,
     hoverState: HoverState) {
       ngZone.runOutsideAngular(() => {
         const hoverEventsUntilDestroyed = hoverState.hoverEvents.pipe(takeUntil(destroyed));
@@ -193,7 +202,7 @@ function connectHoverEvents(
             });
       });
       
-      const enter = fromEvent(elementRef.nativeElement!, 'mouseenter')
+      const enter = fromEvent(element, 'mouseenter')
           .pipe(mapTo(true));
       enter.subscribe(hoverState.hoverEvents);
   
@@ -203,10 +212,10 @@ function connectHoverEvents(
               takeUntil(destroyed),
               first(),)
           .subscribe(() => {
-            fromEvent(elementRef.nativeElement!, 'mouseleave')
+            fromEvent(element, 'mouseleave')
                 .pipe(mapTo(false))
                 .subscribe(hoverState.hoverEvents);
-            fromEvent(elementRef.nativeElement!, 'mousemove')
+            fromEvent(element, 'mousemove')
                 .subscribe(hoverState.activities);
           });
 }
