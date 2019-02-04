@@ -8,7 +8,17 @@
   <!-- Name Column -->
   <ng-container cdkColumnDef="name">
     <th cdk-header-cell *cdkHeaderCellDef> Name </th>
-    <td cdk-cell *cdkCellDef="let element"> {{element.name}} </td>
+    <td cdk-cell *cdkCellDef="let element"
+        cdkInlineEdit="nameEdit"
+        cdkRowHover="nameHover">
+      {{element.name}}
+      <ng-template #nameEdit>
+        Inline edit {{element.name}}!
+      </ng-tempalate>
+      <ng-template #nameHover>
+        <button cdkInlineEditOpen>Open</button>
+      </ng-tempalate>
+    </td>
   </ng-container>
 
   <!-- Weight Column -->
@@ -24,5 +34,6 @@
   </ng-container>
 
   <tr cdk-header-row *cdkHeaderRowDef="displayedColumns"></tr>
-  <tr cdk-row *cdkRowDef="let row; columns: displayedColumns;"></tr>
+  <tr cdk-row *cdkRowDef="let row; columns: displayedColumns;"
+      cdkRowHover></tr>
 </table>
