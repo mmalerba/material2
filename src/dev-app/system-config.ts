@@ -61,6 +61,7 @@ System.config({
     '@angular/cdk/scrolling': 'dist/packages/cdk/scrolling/index.js',
     '@angular/cdk/stepper': 'dist/packages/cdk/stepper/index.js',
     '@angular/cdk/table': 'dist/packages/cdk/table/index.js',
+    '@angular/cdk/table-inline-edit': 'dist/packages/cdk/table-inline-edit/index.js',
     '@angular/cdk/text-field': 'dist/packages/cdk/text-field/index.js',
     '@angular/cdk/tree': 'dist/packages/cdk/tree/index.js',
 
