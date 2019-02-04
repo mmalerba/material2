@@ -17,7 +17,6 @@ import {
   Directive,
   ElementRef,
   EmbeddedViewRef,
-  HostListener,
   Input,
   isDevMode,
   IterableChangeRecord,
