@@ -401,46 +401,61 @@
     through2 "^2.0.0"
     xdg-basedir "^3.0.0"
 
-"@material/animation@^0.41.0":
+"@material/animation@^0.41.0", "@material/animation@file:../material-components-web/packages/mdc-animation/material-animation-0.41.0.tgz":
   version "0.41.0"
-  resolved "https://registry.yarnpkg.com/@material/animation/-/animation-0.41.0.tgz#315b45b32e1aeebee8a4cf555b8ad52076d09ddd"
-  integrity sha512-yYAwJbX3Q2AFd4dr6IYOsWLQy2HN8zWOFVl9AbUXunjzTfJCa/ecfXCriaT6qkmoNoHeTdJHRrsQJZC5GsPvzA==
+  resolved "file:../material-components-web/packages/mdc-animation/material-animation-0.41.0.tgz#85ef1a5823a83cc98b27761a8d586cc9e697ad0c"
 
-"@material/base@^0.41.0":
+"@material/base@^0.41.0", "@material/base@file:../material-components-web/packages/mdc-base/material-base-0.41.0.tgz":
   version "0.41.0"
-  resolved "https://registry.yarnpkg.com/@material/base/-/base-0.41.0.tgz#badadce711b4c25b1eb889a5e7581e32cd07c421"
-  integrity sha512-tEyzwBRu3d1H120SfKsDVYZHcqT5lKohh/7cWKR93aAaPDkSvjpKJIjyu2yuSkjpDduVZGzVocYbOvhUKhhzXQ==
+  resolved "file:../material-components-web/packages/mdc-base/material-base-0.41.0.tgz#a98e012190365cbf98cb05f053c6edc6ff7519fc"
 
-"@material/checkbox@^0.43.0":
-  version "0.43.0"
-  resolved "https://registry.yarnpkg.com/@material/checkbox/-/checkbox-0.43.0.tgz#12d11c4516e7492cfb87d47988c93070f0935924"
-  integrity sha512-LDAD+35I53oMNTIDr8fcVfm9BukwtKnos7FD4axstowminSDRujl26g0uTyi9iLhnkR8Vl70Xl60L6kh+GBX1A==
+"@material/checkbox@file:../material-components-web/packages/mdc-checkbox/material-checkbox-0.44.0.tgz":
+  version "0.44.0"
+  resolved "file:../material-components-web/packages/mdc-checkbox/material-checkbox-0.44.0.tgz#cd07de3801b7da6ae85c20a999cfab2f5d23776a"
   dependencies:
     "@material/animation" "^0.41.0"
     "@material/base" "^0.41.0"
-    "@material/ripple" "^0.43.0"
+    "@material/ripple" "^0.44.0"
     "@material/rtl" "^0.42.0"
-    "@material/selection-control" "^0.43.0"
+    "@material/selection-control" "^0.44.0"
     "@material/theme" "^0.43.0"
 
-"@material/form-field@^0.43.0":
-  version "0.43.0"
-  resolved "https://registry.yarnpkg.com/@material/form-field/-/form-field-0.43.0.tgz#265feacffc9e71a961247534ed3d280caf04a13b"
-  integrity sha512-+qdzfeC6SHezi/3hNdOPiUy5+9tSji3mgP64AZrC8BvEaDYrJdrJU2l8aGVusLqWDPM6QI7jDM1vJfwExgD81w==
+"@material/feature-targeting@^0.44.0":
+  version "0.44.0"
+  resolved "https://registry.yarnpkg.com/@material/feature-targeting/-/feature-targeting-0.44.0.tgz#52cc73f0c8a83159de0357aebe74f15f9856fb4c"
+  integrity sha512-ShuC2TOLfjFpYUCQFtvkqDJhM6HTaucSx5HkRbOvOG+VlpzDx6pAqRUmdVaq2p7tHoQf2vwPMlSVm3gOjWt4VQ==
+
+"@material/feature-targeting@file:../material-components-web/packages/mdc-feature-targeting/material-feature-targeting-0.44.0.tgz":
+  version "0.44.0"
+  resolved "file:../material-components-web/packages/mdc-feature-targeting/material-feature-targeting-0.44.0.tgz#154f66eeb3d4485e639389372181524ec9e80a02"
+
+"@material/form-field@file:../material-components-web/packages/mdc-form-field/material-form-field-0.44.0.tgz":
+  version "0.44.0"
+  resolved "file:../material-components-web/packages/mdc-form-field/material-form-field-0.44.0.tgz#595e535aafebf96e979eadfb439891687404ef23"
   dependencies:
     "@material/base" "^0.41.0"
     "@material/rtl" "^0.42.0"
-    "@material/selection-control" "^0.43.0"
+    "@material/selection-control" "^0.44.0"
     "@material/theme" "^0.43.0"
-    "@material/typography" "^0.43.0"
+    "@material/typography" "^0.44.0"
 
-"@material/ripple@^0.43.0":
-  version "0.43.0"
-  resolved "https://registry.yarnpkg.com/@material/ripple/-/ripple-0.43.0.tgz#e2facd65f17f4c67a2923750e08c5daed43dc627"
-  integrity sha512-5X5xJtE1tM5QYrsvIe5coZNk7nt++vi40CDBVxS2abO+83ky91I5mH/djcm0vcSFmkHM/QOymEQBR3XDjA3XXQ==
+"@material/ripple@^0.44.0":
+  version "0.44.0"
+  resolved "https://registry.yarnpkg.com/@material/ripple/-/ripple-0.44.0.tgz#98920ff8ec4bf5714c97df3d190f02f8a5b476cc"
+  integrity sha512-MlaW4nUDgzS0JOBfsUawXyTOilr0jn+xvTVn6PEaGh2rmhNA54AhixXvdsVUWE9lfmHAsZV0AJHz2z7nunNhbQ==
   dependencies:
     "@material/animation" "^0.41.0"
     "@material/base" "^0.41.0"
+    "@material/feature-targeting" "^0.44.0"
+    "@material/theme" "^0.43.0"
+
+"@material/ripple@file:../material-components-web/packages/mdc-ripple/material-ripple-0.44.0.tgz":
+  version "0.44.0"
+  resolved "file:../material-components-web/packages/mdc-ripple/material-ripple-0.44.0.tgz#6c13e9986ab827f33f221fd9d07fd6a2d563e88f"
+  dependencies:
+    "@material/animation" "^0.41.0"
+    "@material/base" "^0.41.0"
+    "@material/feature-targeting" "^0.44.0"
     "@material/theme" "^0.43.0"
 
 "@material/rtl@^0.42.0":
@@ -448,22 +463,40 @@
   resolved "https://registry.yarnpkg.com/@material/rtl/-/rtl-0.42.0.tgz#1836e78186c2d8b996f6fbf97adab203535335bc"
   integrity sha512-VrnrKJzhmspsN8WXHuxxBZ69yM5IwhCUqWr1t1eNfw3ZEvEj7i1g3P31HGowKThIN1dc1Wh4LE14rCISWCtv5w==
 
-"@material/selection-control@^0.43.0":
-  version "0.43.0"
-  resolved "https://registry.yarnpkg.com/@material/selection-control/-/selection-control-0.43.0.tgz#66ec4fb134c67546a1754f6d3dc16f5995bf3f7d"
-  integrity sha512-8vFMposydO3uZ9mWprTF7lUn3qniwuzLpjd3fZiMM0kSIT9hZautZdQlPjN6pV5sVvhf/Qgx3FZNnTvLm0MReA==
+"@material/rtl@file:../material-components-web/packages/mdc-rtl/material-rtl-0.42.0.tgz":
+  version "0.42.0"
+  resolved "file:../material-components-web/packages/mdc-rtl/material-rtl-0.42.0.tgz#c7320d632715b3250b55e9a62ce5c8e1f1c3328c"
+
+"@material/selection-control@^0.44.0":
+  version "0.44.0"
+  resolved "https://registry.yarnpkg.com/@material/selection-control/-/selection-control-0.44.0.tgz#63d5c65a47a9f54f5a0316b5ecdb5e5f35108609"
+  integrity sha512-HgCAPnMVMEj4X4ILkFSifqtZ3Tcc5HkU+Lfk9g0807sCaN/qBKWkYKLH2WJUbW8uk+MXK7DgP1khtS5zzanJWA==
   dependencies:
-    "@material/ripple" "^0.43.0"
+    "@material/ripple" "^0.44.0"
+
+"@material/selection-control@file:../material-components-web/packages/mdc-selection-control/material-selection-control-0.44.0.tgz":
+  version "0.44.0"
+  resolved "file:../material-components-web/packages/mdc-selection-control/material-selection-control-0.44.0.tgz#52f30f86cf7ceaa4207920883c58529f5854da8c"
+  dependencies:
+    "@material/ripple" "^0.44.0"
 
 "@material/theme@^0.43.0":
   version "0.43.0"
   resolved "https://registry.yarnpkg.com/@material/theme/-/theme-0.43.0.tgz#6d9fa113c82e841817882172c152d60d2d203ca6"
   integrity sha512-/zndZL6EihI18v2mYd4O8xvOBAAXmLeHyHVK28LozSAaJ9okQgD25wq5Ktk95oMTmPIC+rH66KcK6371ivNk8g==
 
-"@material/typography@^0.43.0":
+"@material/theme@file:../material-components-web/packages/mdc-theme/material-theme-0.43.0.tgz":
   version "0.43.0"
-  resolved "https://registry.yarnpkg.com/@material/typography/-/typography-0.43.0.tgz#808abf66c65e11ef8e6c690995803f6825d7d8f3"
-  integrity sha512-WSg8vDoC2rnmOWbhNdDmSoT1jV0QQSw7CFps1DFbnIe57UaUxgWuGdhc+9XlEPctXUFto4FU4DfnRcdW4ydAig==
+  resolved "file:../material-components-web/packages/mdc-theme/material-theme-0.43.0.tgz#e522404e0a7aad66185c1273cb23738d985a291a"
+
+"@material/typography@^0.44.0":
+  version "0.44.0"
+  resolved "https://registry.yarnpkg.com/@material/typography/-/typography-0.44.0.tgz#cf61dce2ee89bfa084d86e1b0f270a585bf9dfaf"
+  integrity sha512-m4SjA9OjZRDKowN3cPzEa8e2GlTlEn3ZmW/Fy9eRNSp83iY+8a0xl6kCaF80v5qAVwVcpfEFyEHWxMJtkBw2uA==
+
+"@material/typography@file:../material-components-web/packages/mdc-typography/material-typography-0.44.0.tgz":
+  version "0.44.0"
+  resolved "file:../material-components-web/packages/mdc-typography/material-typography-0.44.0.tgz#2075771db8f4053953743705bafecc19e25672bc"
 
 "@mrmlnc/readdir-enhanced@^2.2.1":
   version "2.2.1"
