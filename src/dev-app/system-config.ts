@@ -11,9 +11,7 @@ declare const System: any;
 
 // Configure the base path and map the different node packages.
 System.config({
-  paths: {
-    'node:*': 'node_modules/*'
-  },
+  paths: {'node:*': 'node_modules/*'},
   map: {
     'main': 'main.js',
     'tslib': 'node:tslib/tslib.js',
@@ -22,12 +20,12 @@ System.config({
     'rxjs': 'node_modules/rxjs/bundles/rxjs.umd.min.js',
     'rxjs/operators': 'system-rxjs-operators.js',
 
-    '@material/animation': 'node:@material/animation/dist/mdc.animation.min.js',
-    '@material/base': 'node:@material/base/dist/mdc.base.min.js',
-    '@material/checkbox': 'node:@material/checkbox/dist/mdc.checkbox.min.js',
-    '@material/form-field': 'node:@material/form-field/dist/mdc.formField.min.js',
-    '@material/ripple': 'node:@material/ripple/dist/mdc.ripple.min.js',
-    '@material/selection-control': 'node:@material/selection-control/dist/mdc.selectionControl.min.js',
+    '@material/animation': 'node:@material/animation/dist/mdc.animation.js',
+    '@material/base': 'node:@material/base/dist/mdc.base.js',
+    '@material/checkbox': 'node:@material/checkbox/dist/mdc.checkbox.js',
+    '@material/form-field': 'node:@material/form-field/dist/mdc.formField.js',
+    '@material/ripple': 'node:@material/ripple/dist/mdc.ripple.js',
+    '@material/selection-control': 'node:@material/selection-control/dist/mdc.selectionControl.js',
 
     // Angular specific mappings.
     '@angular/core': 'node:@angular/core/bundles/core.umd.js',
@@ -40,11 +38,10 @@ System.config({
     '@angular/router': 'node:@angular/router/bundles/router.umd.js',
     '@angular/animations/browser': 'node:@angular/animations/bundles/animations-browser.umd.js',
     '@angular/platform-browser/animations':
-      'node:@angular/platform-browser/bundles/platform-browser-animations.umd',
-    '@angular/platform-browser':
-      'node:@angular/platform-browser/bundles/platform-browser.umd.js',
+        'node:@angular/platform-browser/bundles/platform-browser-animations.umd',
+    '@angular/platform-browser': 'node:@angular/platform-browser/bundles/platform-browser.umd.js',
     '@angular/platform-browser-dynamic':
-      'node:@angular/platform-browser-dynamic/bundles/platform-browser-dynamic.umd.js',
+        'node:@angular/platform-browser-dynamic/bundles/platform-browser-dynamic.umd.js',
 
     '@angular/material': 'dist/packages/material/index.js',
     '@angular/material-experimental': 'dist/packages/material-experimental/index.js',
@@ -113,8 +110,6 @@ System.config({
   packages: {
     // Set the default extension for the root package, because otherwise the dev-app can't
     // be built within the production mode. Due to missing file extensions.
-    '.': {
-      defaultExtension: 'js'
-    }
+    '.': {defaultExtension: 'js'}
   }
 });

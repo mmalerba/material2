@@ -17,7 +17,11 @@
   "homepage": "https://github.com/angular/material2#readme",
   "peerDependencies": {
     "@angular/material": "0.0.0-PLACEHOLDER",
-    "@angular/core": "0.0.0-NG"
+    "@angular/core": "0.0.0-NG",
+    "@material/animation": "*",
+    "@material/checkbox": "*",
+    "@material/form-field": "*",
+    "@material/selection-control": "*"
   },
   "dependencies": {
     "tslib": "^1.7.1"
