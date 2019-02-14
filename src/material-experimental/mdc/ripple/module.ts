@@ -8,13 +8,12 @@
 
 import {NgModule} from '@angular/core';
 import {MatCommonModule} from '@angular/material/core';
-import {MatMdcRippleModule} from '../ripple/module';
-import {MatMdcCheckbox} from './checkbox';
+import {MatMdcRipple} from './ripple';
 
 @NgModule({
-  imports: [MatCommonModule, MatMdcRippleModule],
-  exports: [MatMdcCheckbox, MatCommonModule],
-  declarations: [MatMdcCheckbox],
+  imports: [MatCommonModule],
+  exports: [MatMdcRipple, MatCommonModule],
+  declarations: [MatMdcRipple],
 })
-export class MatMdcCheckboxModule {
+export class MatMdcRippleModule {
 }
