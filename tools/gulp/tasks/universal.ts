@@ -32,13 +32,15 @@ task('prerender', ['universal:build'], execTask(
   }
 ));
 
-task('universal:build', sequenceTask(
-  'clean',
-  ['material:build-release', 'cdk:build-release'],
-  ['universal:copy-release', 'universal:copy-files'],
-  ['universal:build-app-ts', 'universal:build-app-scss'],
-  'universal:build-prerender-ts',
-));
+task(
+    'universal:build',
+    sequenceTask(
+        'clean',
+        ['material:build-release', 'cdk:build-release', 'material-experimental:build-release'],
+        ['universal:copy-release', 'universal:copy-files'],
+        ['universal:build-app-ts', 'universal:build-app-scss'],
+        'universal:build-prerender-ts',
+        ));
 
 /** Task that builds the universal app in the output directory. */
 task('universal:build-app-ts', ngcBuildTask(tsconfigAppPath));
@@ -57,4 +59,5 @@ task('universal:build-prerender-ts', tsBuildTask(tsconfigPrerenderPath));
 task('universal:copy-release', () => {
   copySync(join(releasesDir, 'material'), join(outDir, 'material'));
   copySync(join(releasesDir, 'cdk'), join(outDir, 'cdk'));
+  copySync(join(releasesDir, 'material-experimental'), join(outDir, 'material-experimental'));
 });
