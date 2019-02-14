@@ -7,8 +7,6 @@
  */
 
 import {coerceBooleanProperty} from '@angular/cdk/coercion';
-import {Platform} from '@angular/cdk/platform';
-import {DOCUMENT} from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -17,7 +15,6 @@ import {
   ElementRef,
   EventEmitter,
   forwardRef,
-  Inject,
   Input,
   OnDestroy,
   Output,
@@ -25,14 +22,14 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
-import {MatCheckboxChange, ThemePalette} from '@angular/material';
+import {MatCheckboxChange, MatRipple, ThemePalette} from '@angular/material';
 import {getCorrectEventName} from '@material/animation';
 import {MDCCheckboxAdapter, MDCCheckboxFoundation} from '@material/checkbox';
 import {MDCFormFieldFoundation} from '@material/form-field';
 import {MDCFormFieldAdapter} from '@material/form-field/adapter';
-import {MDCRipple, MDCRippleFoundation, util as rippleUtil} from '@material/ripple';
-import {MDCRippleAdapter} from '@material/ripple/adapter';
+import {MDCRipple} from '@material/ripple';
 import {MDCSelectionControl} from '@material/selection-control';
+import {MatMdcRipple} from '../ripple/ripple';
 
 let nextUniqueId = 0;
 
@@ -41,16 +38,6 @@ export const MAT_MDC_CHECKBOX_CONTROL_VALUE_ACCESSOR: any = {
   useExisting: forwardRef(() => MatMdcCheckbox),
   multi: true
 };
-
-export class MatMdcRipple extends MDCRipple {
-  disabled = false;
-
-  activate() {
-    if (!this.disabled) {
-      super.activate();
-    }
-  }
-}
 
 @Component({
   moduleId: module.id,
@@ -72,13 +59,13 @@ export class MatMdcRipple extends MDCRipple {
 export class MatMdcCheckbox implements AfterViewInit, OnDestroy, MDCSelectionControl,
     ControlValueAccessor {
   @ViewChild('formField') formField: ElementRef<HTMLElement>;
-  @ViewChild('checkbox') checkbox: ElementRef<HTMLElement>;
+  @ViewChild('checkbox', {read: ElementRef}) checkbox: ElementRef<HTMLElement>;
+  @ViewChild('checkbox', {read: MatMdcRipple}) ripple: MatRipple&MDCRipple;
   @ViewChild('nativeCheckbox') nativeCheckbox: ElementRef<HTMLInputElement>;
   @ViewChild('label') label: ElementRef<HTMLLabelElement>;
 
   private _checkboxFoundation: MDCCheckboxFoundation;
   private _formFieldFoundation: MDCFormFieldFoundation;
-  private _ripple: MatMdcRipple;
   private _handleChange: EventListener;
   private _handleAnimationEnd: EventListener;
 
@@ -102,17 +89,8 @@ export class MatMdcCheckbox implements AfterViewInit, OnDestroy, MDCSelectionCon
         this.label.nativeElement.addEventListener(type, handler),
     deregisterInteractionHandler: (type, handler) =>
         this.label.nativeElement.removeEventListener(type, handler),
-    activateInputRipple: () => {
-      console.log('ripple disabled?', this.disableRipple);
-      if (this.ripple) {
-        this.ripple.activate();
-      }
-    },
-    deactivateInputRipple: () => {
-      if (this.ripple) {
-        this.ripple.deactivate();
-      }
-    },
+    activateInputRipple: () => this.ripple.activate(),
+    deactivateInputRipple: () => this.ripple.deactivate()
   };
 
   @Input('aria-label') ariaLabel: string = '';
@@ -177,17 +155,7 @@ export class MatMdcCheckbox implements AfterViewInit, OnDestroy, MDCSelectionCon
 
   @Input() color: ThemePalette = 'primary';
 
-  @Input()
-  get disableRipple() {
-    return this._disableRipple;
-  }
-  set disableRipple(disabled: boolean) {
-    this._disableRipple = coerceBooleanProperty(disabled);
-    if (this.ripple) {
-      this.ripple.disabled = this._disableRipple;
-    }
-  }
-  private _disableRipple = false;
+  @Input() disableRipple: boolean = false;
 
   @Output() readonly change: EventEmitter<MatCheckboxChange> =
       new EventEmitter<MatCheckboxChange>();
@@ -197,17 +165,13 @@ export class MatMdcCheckbox implements AfterViewInit, OnDestroy, MDCSelectionCon
   private _cvaOnChange = (_: boolean) => {};
   private _cvaOnTouch = () => {};
 
-  constructor(
-      @Inject(DOCUMENT) private _doc: any, private _cdr: ChangeDetectorRef,
-      private _platform: Platform) {}
+  constructor(private _cdr: ChangeDetectorRef) {}
 
   ngAfterViewInit() {
     this._checkboxFoundation = new MDCCheckboxFoundation(this._checkboxAdapter);
     this._formFieldFoundation = new MDCFormFieldFoundation(this._formFieldAdapter);
     this._checkboxFoundation.init();
     this._formFieldFoundation.init();
-
-    this._ripple = this._initRipple();
 
     // Initial sync with DOM
     this._handleChange = () => this._checkboxFoundation.handleChange();
@@ -218,47 +182,11 @@ export class MatMdcCheckbox implements AfterViewInit, OnDestroy, MDCSelectionCon
   }
 
   ngOnDestroy() {
-    this._ripple.destroy();
     this.nativeCheckbox.nativeElement.removeEventListener('change', this._handleChange);
     this.checkbox.nativeElement.removeEventListener(
         getCorrectEventName(window, 'animationend'), this._handleAnimationEnd);
     this._checkboxFoundation.destroy();
     this._formFieldFoundation.destroy();
-  }
-
-  get ripple() {
-    return this._ripple;
-  }
-
-  private _initRipple() {
-    const MATCHES = rippleUtil.getMatchesProperty(HTMLElement.prototype) as 'matches';
-    const rippleAdapter: MDCRippleAdapter = {
-      browserSupportsCssVars: () =>
-          this._platform.isBrowser && rippleUtil.supportsCssVariables(window),
-      isSurfaceDisabled: () => this.disabled,
-      addClass: (className) => this.checkbox.nativeElement.classList.add(className),
-      removeClass: (className) => this.checkbox.nativeElement.classList.remove(className),
-      containsEventTarget: (target: Node) => this.checkbox.nativeElement.contains(target),
-      registerDocumentInteractionHandler: (evtType, handler) =>
-          this._doc.documentElement.addEventListener(evtType, handler, rippleUtil.applyPassive()),
-      deregisterDocumentInteractionHandler: (evtType, handler) =>
-          this._doc.documentElement.removeEventListener(
-              evtType, handler, rippleUtil.applyPassive() as EventListenerOptions),
-      registerResizeHandler: (handler) => window.addEventListener('resize', handler),
-      deregisterResizeHandler: (handler) => window.removeEventListener('resize', handler),
-      updateCssVariable: (varName: string, value: string|null) =>
-          this.checkbox.nativeElement.style.setProperty(varName, value),
-      computeBoundingRect: () => this.checkbox.nativeElement.getBoundingClientRect(),
-      getWindowPageOffset: () => ({x: window.pageXOffset, y: window.pageYOffset}),
-      isUnbounded: () => true,
-      isSurfaceActive: () => this.nativeCheckbox.nativeElement[MATCHES](':active'),
-      registerInteractionHandler: (type: string, handler: EventListener) =>
-          this.nativeCheckbox.nativeElement.addEventListener(type, handler),
-      deregisterInteractionHandler: (type: string, handler: EventListener) =>
-          this.nativeCheckbox.nativeElement.removeEventListener(type, handler),
-    };
-    const foundation = new MDCRippleFoundation(rippleAdapter);
-    return new MatMdcRipple(this.checkbox.nativeElement, foundation);
   }
 
   _onNativeChange(event: Event) {
@@ -276,7 +204,7 @@ export class MatMdcCheckbox implements AfterViewInit, OnDestroy, MDCSelectionCon
     this.indeterminateChange.next(false);
   }
 
-  registerOnChange(fn: (checked: boolean) => {}): void {
+  registerOnChange(fn: (checked: boolean) => void): void {
     this._cvaOnChange = fn;
   }
 
@@ -294,5 +222,13 @@ export class MatMdcCheckbox implements AfterViewInit, OnDestroy, MDCSelectionCon
 
   _onNativeBlur() {
     Promise.resolve().then(() => this._cvaOnTouch());
+  }
+
+  toggle() {
+    this.checked = !this.checked;
+  }
+
+  focus() {
+    this.nativeCheckbox.nativeElement.focus();
   }
 }

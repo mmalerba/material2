@@ -8,3 +8,4 @@
 
 export * from './version';
 export * from './mdc/checkbox/index';
+export * from './mdc/ripple/index';
