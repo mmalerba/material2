@@ -7,6 +7,7 @@
  */
 
 import {coerceBooleanProperty} from '@angular/cdk/coercion';
+import {Platform} from '@angular/cdk/platform';
 import {DOCUMENT} from '@angular/common';
 import {
   AfterViewInit,
@@ -29,11 +30,7 @@ import {getCorrectEventName} from '@material/animation';
 import {MDCCheckboxAdapter, MDCCheckboxFoundation} from '@material/checkbox';
 import {MDCFormFieldFoundation} from '@material/form-field';
 import {MDCFormFieldAdapter} from '@material/form-field/adapter';
-import {
-  MDCRipple,
-  MDCRippleFoundation,
-  util as rippleUtil
-} from '@material/ripple';
+import {MDCRipple, MDCRippleFoundation, util as rippleUtil} from '@material/ripple';
 import {MDCRippleAdapter} from '@material/ripple/adapter';
 import {MDCSelectionControl} from '@material/selection-control';
 
@@ -200,7 +197,9 @@ export class MatMdcCheckbox implements AfterViewInit, OnDestroy, MDCSelectionCon
   private _cvaOnChange = (_: boolean) => {};
   private _cvaOnTouch = () => {};
 
-  constructor(@Inject(DOCUMENT) private _doc: any, private _cdr: ChangeDetectorRef) {}
+  constructor(
+      @Inject(DOCUMENT) private _doc: any, private _cdr: ChangeDetectorRef,
+      private _platform: Platform) {}
 
   ngAfterViewInit() {
     this._checkboxFoundation = new MDCCheckboxFoundation(this._checkboxAdapter);
@@ -232,9 +231,10 @@ export class MatMdcCheckbox implements AfterViewInit, OnDestroy, MDCSelectionCon
   }
 
   private _initRipple() {
-    const MATCHES = rippleUtil.getMatchesProperty(HTMLElement.prototype) as any as 'matches';
+    const MATCHES = rippleUtil.getMatchesProperty(HTMLElement.prototype) as 'matches';
     const rippleAdapter: MDCRippleAdapter = {
-      browserSupportsCssVars: () => !!rippleUtil.supportsCssVariables(window),
+      browserSupportsCssVars: () =>
+          this._platform.isBrowser && rippleUtil.supportsCssVariables(window),
       isSurfaceDisabled: () => this.disabled,
       addClass: (className) => this.checkbox.nativeElement.classList.add(className),
       removeClass: (className) => this.checkbox.nativeElement.classList.remove(className),

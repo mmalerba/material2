@@ -23,7 +23,8 @@
     "paths": {
       "@angular/material": ["./material"],
       "@angular/cdk/*": ["./cdk/*"],
-      "@angular/material/*": ["./material/*"]
+      "@angular/material/*": ["./material/*"],
+      "@angular/material-experimental": ["./material-experimental"]
     },
     "allowJs": true
   },
