@@ -23,6 +23,7 @@ System.config({
     '@material/animation': 'node:@material/animation/dist/mdc.animation.js',
     '@material/base': 'node:@material/base/dist/mdc.base.js',
     '@material/checkbox': 'node:@material/checkbox/dist/mdc.checkbox.js',
+    '@material/dom': 'node:@material/dom/dist/mdc.dom.js',
     '@material/form-field': 'node:@material/form-field/dist/mdc.formField.js',
     '@material/ripple': 'node:@material/ripple/dist/mdc.ripple.js',
     '@material/selection-control': 'node:@material/selection-control/dist/mdc.selectionControl.js',

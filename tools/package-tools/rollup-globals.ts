@@ -44,6 +44,7 @@ export const rollupGlobals = {
   '@material/animation': 'mdc.animation',
   '@material/base': 'mdc.base',
   '@material/checkbox': 'mdc.checkbox',
+  '@material/dom': 'mdc.dom',
   '@material/form-field': 'mdc.formField',
   '@material/ripple': 'mdc.ripple',
   '@material/selection-control': 'mdc.selectionControl',

@@ -41,6 +41,7 @@
     "@material/animation": "/usr/local/google/home/mmalerba/material-components-web/packages/mdc-animation/material-animation-0.41.0.tgz",
     "@material/base": "/usr/local/google/home/mmalerba/material-components-web/packages/mdc-base/material-base-0.41.0.tgz",
     "@material/checkbox": "/usr/local/google/home/mmalerba/material-components-web/packages/mdc-checkbox/material-checkbox-0.44.0.tgz",
+    "@material/dom": "/usr/local/google/home/mmalerba/material-components-web/packages/mdc-dom/material-dom-0.41.0.tgz",
     "@material/feature-targeting": "/usr/local/google/home/mmalerba/material-components-web/packages/mdc-feature-targeting/material-feature-targeting-0.44.0.tgz",
     "@material/form-field": "/usr/local/google/home/mmalerba/material-components-web/packages/mdc-form-field/material-form-field-0.44.0.tgz",
     "@material/ripple": "/usr/local/google/home/mmalerba/material-components-web/packages/mdc-ripple/material-ripple-0.44.0.tgz",

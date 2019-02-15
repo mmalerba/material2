@@ -7,6 +7,7 @@
  */
 
 import {coerceBooleanProperty} from '@angular/cdk/coercion';
+import {Platform} from '@angular/cdk/platform';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -29,6 +30,7 @@ import {MDCFormFieldFoundation} from '@material/form-field';
 import {MDCFormFieldAdapter} from '@material/form-field/adapter';
 import {MDCRipple} from '@material/ripple';
 import {MDCSelectionControl} from '@material/selection-control';
+
 import {MatMdcRipple} from '../ripple/ripple';
 
 let nextUniqueId = 0;
@@ -165,7 +167,7 @@ export class MatMdcCheckbox implements AfterViewInit, OnDestroy, MDCSelectionCon
   private _cvaOnChange = (_: boolean) => {};
   private _cvaOnTouch = () => {};
 
-  constructor(private _cdr: ChangeDetectorRef) {}
+  constructor(private _platform: Platform, private _cdr: ChangeDetectorRef) {}
 
   ngAfterViewInit() {
     this._checkboxFoundation = new MDCCheckboxFoundation(this._checkboxAdapter);
@@ -178,13 +180,15 @@ export class MatMdcCheckbox implements AfterViewInit, OnDestroy, MDCSelectionCon
     this._handleAnimationEnd = () => this._checkboxFoundation.handleAnimationEnd();
     this.nativeCheckbox.nativeElement.addEventListener('change', this._handleChange);
     this.checkbox.nativeElement.addEventListener(
-        getCorrectEventName(window, 'animationend'), this._handleAnimationEnd);
+        this._platform.isBrowser ? getCorrectEventName(window, 'animationend') : 'animationend',
+        this._handleAnimationEnd);
   }
 
   ngOnDestroy() {
     this.nativeCheckbox.nativeElement.removeEventListener('change', this._handleChange);
     this.checkbox.nativeElement.removeEventListener(
-        getCorrectEventName(window, 'animationend'), this._handleAnimationEnd);
+        this._platform.isBrowser ? getCorrectEventName(window, 'animationend') : 'animationend',
+        this._handleAnimationEnd);
     this._checkboxFoundation.destroy();
     this._formFieldFoundation.destroy();
   }
