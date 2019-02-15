@@ -71,17 +71,23 @@ export class MatMdcCheckbox implements AfterViewInit, OnDestroy, MDCSelectionCon
   private _handleChange: EventListener;
   private _handleAnimationEnd: EventListener;
 
+  _classes: {[key: string]: boolean} = {'mdc-checkbox__native-control': true};
+
+  private _setClass(cssClass: string, active: boolean) {
+    this._classes = {...this._classes, [cssClass]: active};
+    this._cdr.markForCheck();
+  }
+
   private _checkboxAdapter: MDCCheckboxAdapter = {
-    addClass: (className) => this.checkbox.nativeElement.classList.add(className),
-    removeClass: (className) => this.checkbox.nativeElement.classList.remove(className),
+    addClass: (className) => this._setClass(className, true),
+    removeClass: (className) => this._setClass(className, false),
     setNativeControlAttr: (attr, value) =>
         this.nativeCheckbox.nativeElement.setAttribute(attr, value),
     removeNativeControlAttr: (attr) => this.nativeCheckbox.nativeElement.removeAttribute(attr),
     isIndeterminate: () => this.indeterminate,
     isChecked: () => this.checked,
     hasNativeControl: () => !!this.nativeCheckbox.nativeElement,
-    setNativeControlDisabled: (disabled: boolean) => this.nativeCheckbox.nativeElement.disabled =
-        disabled,
+    setNativeControlDisabled: (disabled: boolean) => this.disabled = disabled,
     forceLayout: () => this.checkbox.nativeElement.offsetWidth,
     isAttachedToDOM: () => !!this.checkbox.nativeElement.parentNode,
   };
