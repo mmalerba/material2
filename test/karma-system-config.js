@@ -1,20 +1,19 @@
 // Configure the base path and map the different node packages.
 System.config({
   baseURL: '/base',
-  paths: {
-    'node:*': 'node_modules/*'
-  },
+  paths: {'node:*': 'node_modules/*'},
   map: {
     'rxjs': 'node:rxjs',
     'tslib': 'node:tslib/tslib.js',
     'moment': 'node:moment/min/moment-with-locales.min.js',
 
-    '@material/animation': 'node:@material/animation/dist/mdc.animation.min.js',
-    '@material/base': 'node:@material/base/dist/mdc.base.min.js',
-    '@material/checkbox': 'node:@material/checkbox/dist/mdc.checkbox.min.js',
-    '@material/form-field': 'node:@material/form-field/dist/mdc.formField.min.js',
-    '@material/ripple': 'node:@material/ripple/dist/mdc.ripple.min.js',
-    '@material/selection-control': 'node:@material/selection-control/dist/mdc.selectionControl.min.js',
+    '@material/animation': 'node:@material/animation/dist/mdc.animation.js',
+    '@material/base': 'node:@material/base/dist/mdc.base.js',
+    '@material/checkbox': 'node:@material/checkbox/dist/mdc.checkbox.js',
+    '@material/dom': 'node:@material/dom/dist/mdc.dom.js',
+    '@material/form-field': 'node:@material/form-field/dist/mdc.formField.js',
+    '@material/ripple': 'node:@material/ripple/dist/mdc.ripple.js',
+    '@material/selection-control': 'node:@material/selection-control/dist/mdc.selectionControl.js',
 
     // Angular specific mappings.
     '@angular/core': 'node:@angular/core/bundles/core.umd.js',
@@ -30,15 +29,15 @@ System.config({
     '@angular/animations': 'node:@angular/animations/bundles/animations.umd.min.js',
     '@angular/animations/browser': 'node:@angular/animations/bundles/animations-browser.umd.min.js',
     '@angular/platform-browser/animations':
-      'node:@angular/platform-browser/bundles/platform-browser-animations.umd.min.js',
+        'node:@angular/platform-browser/bundles/platform-browser-animations.umd.min.js',
     '@angular/platform-browser':
-      'node:@angular/platform-browser/bundles/platform-browser.umd.min.js',
+        'node:@angular/platform-browser/bundles/platform-browser.umd.min.js',
     '@angular/platform-browser/testing':
-      'node:@angular/platform-browser/bundles/platform-browser-testing.umd.min.js',
+        'node:@angular/platform-browser/bundles/platform-browser-testing.umd.min.js',
     '@angular/platform-browser-dynamic':
-      'node:@angular/platform-browser-dynamic/bundles/platform-browser-dynamic.umd.min.js',
+        'node:@angular/platform-browser-dynamic/bundles/platform-browser-dynamic.umd.min.js',
     '@angular/platform-browser-dynamic/testing':
-      'node:@angular/platform-browser-dynamic/bundles/platform-browser-dynamic-testing.umd.min.js',
+        'node:@angular/platform-browser-dynamic/bundles/platform-browser-dynamic-testing.umd.min.js',
 
     // Path mappings for local packages that can be imported inside of tests.
     '@angular/material': 'dist/packages/material/index.js',
@@ -112,8 +111,6 @@ System.config({
 
     // Set the default extension for the root package, because otherwise the tests can't
     // be built within the production mode. Due to missing file extensions.
-    '.': {
-      defaultExtension: 'js'
-    }
+    '.': {defaultExtension: 'js'}
   }
 });

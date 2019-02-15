@@ -1,4 +1,5 @@
 @import '../lib/core/theming/all-theme';
+@import '../material-experimental/mdc/checkbox/checkbox-theme';
 
 // Plus imports for other components in your app.
 
@@ -14,3 +15,4 @@ $candy-app-theme:   mat-light-theme($candy-app-primary, $candy-app-accent);
 
 // Include the default theme styles.
 @include angular-material-theme($candy-app-theme);
+@include mat-mdc-checkbox-theme($candy-app-theme);

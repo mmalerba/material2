@@ -4,16 +4,18 @@ import {DOCUMENT} from '@angular/common';
 import {AfterViewInit, Directive, ElementRef, Inject, Input} from '@angular/core';
 import {RippleAnimationConfig, RippleConfig, RippleRef, RippleState} from '@angular/material';
 import {EventType} from '@material/base';
+import {ponyfill} from '@material/dom';
 import {MDCRippleFoundation, util as rippleUtil} from '@material/ripple';
 import {MDCRippleAdapter} from '@material/ripple/adapter';
-
-const MATCHES = rippleUtil.getMatchesProperty(HTMLElement.prototype) as 'matches';
 
 // NOTES:
 // - `color` only accepts `primary` / `accent` / `warn`
 // - `radius` is not supported
 // - `animation` is not supported
 // - `centered` is not supported
+// - `RippleRef` and `RippleConfig` are mostly useless
+// - `fadeOutAll` and `launch` are replaced with `activate` and `deactivate`
+// - `disabled` is not hooked up to anything yet
 
 @Directive({
   selector: '[mat-mdc-ripple], [matMdcRipple]',
@@ -47,7 +49,6 @@ export class MatMdcRipple implements AfterViewInit {
   // TODO: implement
   @Input('matRippleDisabled') disabled: boolean = false;
 
-  // TODO: implement
   @Input('matRippleTrigger')
   get trigger(): HTMLElement {
     return this._trigger || this.root_;
@@ -107,7 +108,7 @@ export class MatMdcRipple implements AfterViewInit {
     computeBoundingRect: () => this.root_.getBoundingClientRect(),
     getWindowPageOffset: () => ({x: window.pageXOffset, y: window.pageYOffset}),
     isUnbounded: () => true,
-    isSurfaceActive: () => this.trigger[MATCHES](':active'),
+    isSurfaceActive: () => ponyfill.matches(this.trigger, ':active'),
     registerInteractionHandler:
         (type, handler: EventListener) => {
           this._listeners.push({type, handler});
