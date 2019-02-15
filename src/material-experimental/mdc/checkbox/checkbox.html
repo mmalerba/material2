@@ -8,7 +8,7 @@
        [matRippleDisabled]="disableRipple">
     <input #nativeCheckbox
            type="checkbox"
-           class="mdc-checkbox__native-control"
+           [ngClass]="_classes"
            [attr.aria-label]="ariaLabel || null"
            [attr.aria-labelledby]="ariaLabelledby"
            [attr.name]="name"
