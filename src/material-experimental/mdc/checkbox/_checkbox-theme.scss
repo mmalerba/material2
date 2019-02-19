@@ -117,3 +117,18 @@
 @mixin mat-mdc-checkbox-typography($config) {
   @include mdc-checkbox($query: typography);
 }
+
+//// Core styles moved to mixin for easier measuring of JS vs CSS
+@import '@material/checkbox/mixins';
+@import '@material/feature-targeting/functions';
+
+// TODO: clean up when form-field is changed to feature-targeting
+@import '@material/form-field/mdc-form-field';
+
+@include mdc-checkbox(
+    $query: mdc-feature-without(mdc-feature-any(color, typography)));
+
+mat-mdc-checkbox label:empty {
+  display: none;
+}
+//// Core styles moved to mixin for easier measuring of JS vs CSS
