@@ -8,11 +8,11 @@
 
 import {CommonModule} from '@angular/common';
 import {NgModule} from '@angular/core';
-import {MatCommonModule} from '@angular/material/core';
+import {MatCommonModule, MatRippleModule} from '@angular/material/core';
 import {MatMdcCheckbox} from './checkbox';
 
 @NgModule({
-  imports: [MatCommonModule, CommonModule],
+  imports: [MatCommonModule, CommonModule, MatRippleModule],
   exports: [MatMdcCheckbox, MatCommonModule],
   declarations: [MatMdcCheckbox],
 })
