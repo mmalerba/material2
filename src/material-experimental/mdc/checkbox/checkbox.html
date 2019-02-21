@@ -1,11 +1,7 @@
 <div #formField
      class="mdc-form-field"
      [class.mdc-form-field--align-end]="labelPosition == 'before'" (change)="_onNativeChange($event)">
-  <div #checkbox
-       class="mdc-checkbox"
-       matMdcRipple
-       [matRippleTrigger]="nativeCheckbox.nativeElement"
-       [matRippleDisabled]="disableRipple">
+  <div #checkbox class="mdc-checkbox">
     <input #nativeCheckbox
            type="checkbox"
            [ngClass]="_classes"

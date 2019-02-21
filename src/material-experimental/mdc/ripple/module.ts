@@ -8,12 +8,12 @@
 
 import {NgModule} from '@angular/core';
 import {MatCommonModule} from '@angular/material/core';
-import {MatMdcRipple} from './ripple';
+// import {MatMdcRipple} from './ripple';
 
 @NgModule({
   imports: [MatCommonModule],
-  exports: [MatMdcRipple, MatCommonModule],
-  declarations: [MatMdcRipple],
+  exports: [/*MatMdcRipple*/, MatCommonModule],
+  //  declarations: [MatMdcRipple],
 })
 export class MatMdcRippleModule {
 }
