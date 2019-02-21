@@ -23,14 +23,13 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
-import {MatCheckboxChange, ThemePalette} from '@angular/material';
+import {MatCheckboxChange, MatRipple, RippleRef, ThemePalette} from '@angular/material';
 import {getCorrectEventName} from '@material/animation';
 import {MDCCheckboxAdapter, MDCCheckboxFoundation} from '@material/checkbox';
 import {MDCFormFieldFoundation} from '@material/form-field';
 import {MDCFormFieldAdapter} from '@material/form-field/adapter';
 import {MDCSelectionControl} from '@material/selection-control';
 
-import {MatMdcRippleRenderer} from '../ripple/ripple';
 
 let nextUniqueId = 0;
 
@@ -60,10 +59,27 @@ export class MatMdcCheckbox implements AfterViewInit, OnDestroy, MDCSelectionCon
     ControlValueAccessor {
   @ViewChild('formField') formField: ElementRef<HTMLElement>;
   @ViewChild('checkbox', {read: ElementRef}) checkbox: ElementRef<HTMLElement>;
+  @ViewChild('checkbox', {read: MatRipple}) _ripple: MatRipple;
   @ViewChild('nativeCheckbox') nativeCheckbox: ElementRef<HTMLInputElement>;
   @ViewChild('label') label: ElementRef<HTMLLabelElement>;
+
   // TODO: fix type once it no longer has to be MDCRipple.
-  ripple: any;
+  ripple: any = {
+    activate: () => {
+      if (!this._rippleRef) {
+        this._rippleRef = this._ripple.launch({});
+      }
+    },
+    deactivate:
+        () => {
+          if (this._rippleRef) {
+            this._rippleRef.fadeOut();
+            this._rippleRef = null;
+          }
+        },
+    layout: () => {}
+  };
+  private _rippleRef: RippleRef|null = null;
 
   private _checkboxFoundation: MDCCheckboxFoundation;
   private _formFieldFoundation: MDCFormFieldFoundation;
@@ -172,13 +188,9 @@ export class MatMdcCheckbox implements AfterViewInit, OnDestroy, MDCSelectionCon
   private _cvaOnChange = (_: boolean) => {};
   private _cvaOnTouch = () => {};
 
-  constructor(
-      private _platform: Platform, private _cdr: ChangeDetectorRef,
-      private _rippleRenderer: MatMdcRippleRenderer) {}
+  constructor(private _platform: Platform, private _cdr: ChangeDetectorRef) {}
 
   ngAfterViewInit() {
-    this.ripple = this._rippleRenderer.createRipple(
-        this.checkbox.nativeElement, this.nativeCheckbox.nativeElement, () => this.disableRipple);
     this._checkboxFoundation = new MDCCheckboxFoundation(this._checkboxAdapter);
     this._formFieldFoundation = new MDCFormFieldFoundation(this._formFieldAdapter);
     this._checkboxFoundation.init();
@@ -200,7 +212,6 @@ export class MatMdcCheckbox implements AfterViewInit, OnDestroy, MDCSelectionCon
         this._handleAnimationEnd);
     this._checkboxFoundation.destroy();
     this._formFieldFoundation.destroy();
-    this.ripple.destroy();
   }
 
   _onNativeChange(event: Event) {
