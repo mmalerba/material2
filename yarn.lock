@@ -401,17 +401,17 @@
     through2 "^2.0.0"
     xdg-basedir "^3.0.0"
 
-"@material/animation@/usr/local/google/home/mmalerba/material-components-web/packages/mdc-animation/material-animation-0.41.0.tgz", "@material/animation@^0.41.0":
+"@material/animation@^0.41.0", "@material/animation@file:../material-components-web/packages/mdc-animation/material-animation-0.41.0.tgz":
   version "0.41.0"
-  resolved "/usr/local/google/home/mmalerba/material-components-web/packages/mdc-animation/material-animation-0.41.0.tgz#725ef7ffecb53b93cee39e57db3f6ddf82d5354a"
+  resolved "file:../material-components-web/packages/mdc-animation/material-animation-0.41.0.tgz#c2f50878833e18a5da30d1bbef436fcb821d92db"
 
-"@material/base@/usr/local/google/home/mmalerba/material-components-web/packages/mdc-base/material-base-0.41.0.tgz", "@material/base@^0.41.0":
+"@material/base@^0.41.0", "@material/base@file:../material-components-web/packages/mdc-base/material-base-0.41.0.tgz":
   version "0.41.0"
-  resolved "/usr/local/google/home/mmalerba/material-components-web/packages/mdc-base/material-base-0.41.0.tgz#57583b0470fba7cce8a1aab8ab6ce23bc5306521"
+  resolved "file:../material-components-web/packages/mdc-base/material-base-0.41.0.tgz#746155274c3cd31222497cc6b6112adfa70e1365"
 
-"@material/checkbox@/usr/local/google/home/mmalerba/material-components-web/packages/mdc-checkbox/material-checkbox-0.44.0.tgz":
+"@material/checkbox@file:../material-components-web/packages/mdc-checkbox/material-checkbox-0.44.0.tgz":
   version "0.44.0"
-  resolved "/usr/local/google/home/mmalerba/material-components-web/packages/mdc-checkbox/material-checkbox-0.44.0.tgz#f3a410d08ea18340a74d7e876afda030f98bf984"
+  resolved "file:../material-components-web/packages/mdc-checkbox/material-checkbox-0.44.0.tgz#f4cbba9c7618d4b7a0ce6c9137796cc351bcff30"
   dependencies:
     "@material/animation" "^0.41.0"
     "@material/base" "^0.41.0"
@@ -422,43 +422,33 @@
     "@material/selection-control" "^0.44.0"
     "@material/theme" "^0.43.0"
 
-"@material/dom@/usr/local/google/home/mmalerba/material-components-web/packages/mdc-dom/material-dom-0.41.0.tgz":
-  version "0.41.0"
-  resolved "/usr/local/google/home/mmalerba/material-components-web/packages/mdc-dom/material-dom-0.41.0.tgz#c50d64ddbbade388bc10351c4e57ab4ab6875499"
-
 "@material/dom@^0.41.0":
   version "0.41.0"
   resolved "https://registry.yarnpkg.com/@material/dom/-/dom-0.41.0.tgz#6756865f97bad4c91ee75e69d769d7cdc25398ae"
   integrity sha512-wOJrMwjPddYXpQFZAIaCLWI3TO/6KU1lxESTBzunni8A4FHQVWhokml5Xt85GqZwmPFeIF2s+D0wfbWyrGBuKQ==
 
-"@material/feature-targeting@/usr/local/google/home/mmalerba/material-components-web/packages/mdc-feature-targeting/material-feature-targeting-0.44.0.tgz":
-  version "0.44.0"
-  resolved "/usr/local/google/home/mmalerba/material-components-web/packages/mdc-feature-targeting/material-feature-targeting-0.44.0.tgz#154f66eeb3d4485e639389372181524ec9e80a02"
+"@material/dom@file:../material-components-web/packages/mdc-dom/material-dom-0.41.0.tgz":
+  version "0.41.0"
+  resolved "file:../material-components-web/packages/mdc-dom/material-dom-0.41.0.tgz#d9c3e548aaec1751f18d0fcc5702d2bfe0e84435"
 
 "@material/feature-targeting@^0.44.0":
   version "0.44.0"
   resolved "https://registry.yarnpkg.com/@material/feature-targeting/-/feature-targeting-0.44.0.tgz#52cc73f0c8a83159de0357aebe74f15f9856fb4c"
   integrity sha512-ShuC2TOLfjFpYUCQFtvkqDJhM6HTaucSx5HkRbOvOG+VlpzDx6pAqRUmdVaq2p7tHoQf2vwPMlSVm3gOjWt4VQ==
 
-"@material/form-field@/usr/local/google/home/mmalerba/material-components-web/packages/mdc-form-field/material-form-field-0.44.0.tgz":
+"@material/feature-targeting@file:../material-components-web/packages/mdc-feature-targeting/material-feature-targeting-0.44.0.tgz":
   version "0.44.0"
-  resolved "/usr/local/google/home/mmalerba/material-components-web/packages/mdc-form-field/material-form-field-0.44.0.tgz#1ccfe691e9ad2b73afe1f971a07dd4734d4aa3a1"
+  resolved "file:../material-components-web/packages/mdc-feature-targeting/material-feature-targeting-0.44.0.tgz#86153c694235afe0e11e07a35db401bbab2b2425"
+
+"@material/form-field@file:../material-components-web/packages/mdc-form-field/material-form-field-0.44.0.tgz":
+  version "0.44.0"
+  resolved "file:../material-components-web/packages/mdc-form-field/material-form-field-0.44.0.tgz#dfb8cec96ff6ea045b8ffc7758f7601214896530"
   dependencies:
     "@material/base" "^0.41.0"
     "@material/rtl" "^0.42.0"
     "@material/selection-control" "^0.44.0"
     "@material/theme" "^0.43.0"
     "@material/typography" "^0.44.0"
-
-"@material/ripple@/usr/local/google/home/mmalerba/material-components-web/packages/mdc-ripple/material-ripple-0.44.0.tgz":
-  version "0.44.0"
-  resolved "/usr/local/google/home/mmalerba/material-components-web/packages/mdc-ripple/material-ripple-0.44.0.tgz#514efca449b15915f6ab6989ad376d09a10475bb"
-  dependencies:
-    "@material/animation" "^0.41.0"
-    "@material/base" "^0.41.0"
-    "@material/dom" "^0.41.0"
-    "@material/feature-targeting" "^0.44.0"
-    "@material/theme" "^0.43.0"
 
 "@material/ripple@^0.44.0":
   version "0.44.0"
@@ -470,20 +460,24 @@
     "@material/feature-targeting" "^0.44.0"
     "@material/theme" "^0.43.0"
 
-"@material/rtl@/usr/local/google/home/mmalerba/material-components-web/packages/mdc-rtl/material-rtl-0.42.0.tgz":
-  version "0.42.0"
-  resolved "/usr/local/google/home/mmalerba/material-components-web/packages/mdc-rtl/material-rtl-0.42.0.tgz#c7320d632715b3250b55e9a62ce5c8e1f1c3328c"
+"@material/ripple@file:../material-components-web/packages/mdc-ripple/material-ripple-0.44.0.tgz":
+  version "0.44.0"
+  resolved "file:../material-components-web/packages/mdc-ripple/material-ripple-0.44.0.tgz#2287d9c39913e2a8985e74f56524ef6c0476e25d"
+  dependencies:
+    "@material/animation" "^0.41.0"
+    "@material/base" "^0.41.0"
+    "@material/dom" "^0.41.0"
+    "@material/feature-targeting" "^0.44.0"
+    "@material/theme" "^0.43.0"
 
 "@material/rtl@^0.42.0":
   version "0.42.0"
   resolved "https://registry.yarnpkg.com/@material/rtl/-/rtl-0.42.0.tgz#1836e78186c2d8b996f6fbf97adab203535335bc"
   integrity sha512-VrnrKJzhmspsN8WXHuxxBZ69yM5IwhCUqWr1t1eNfw3ZEvEj7i1g3P31HGowKThIN1dc1Wh4LE14rCISWCtv5w==
 
-"@material/selection-control@/usr/local/google/home/mmalerba/material-components-web/packages/mdc-selection-control/material-selection-control-0.44.0.tgz":
-  version "0.44.0"
-  resolved "/usr/local/google/home/mmalerba/material-components-web/packages/mdc-selection-control/material-selection-control-0.44.0.tgz#a835983f2e5a24b74b99cfe3ce34c40727d5693e"
-  dependencies:
-    "@material/ripple" "^0.44.0"
+"@material/rtl@file:../material-components-web/packages/mdc-rtl/material-rtl-0.42.0.tgz":
+  version "0.42.0"
+  resolved "file:../material-components-web/packages/mdc-rtl/material-rtl-0.42.0.tgz#ec1b0208c62c3caf1b066664660945b01e2499a6"
 
 "@material/selection-control@^0.44.0":
   version "0.44.0"
@@ -492,25 +486,31 @@
   dependencies:
     "@material/ripple" "^0.44.0"
 
-"@material/theme@/usr/local/google/home/mmalerba/material-components-web/packages/mdc-theme/material-theme-0.43.0.tgz":
-  version "0.43.0"
-  resolved "/usr/local/google/home/mmalerba/material-components-web/packages/mdc-theme/material-theme-0.43.0.tgz#e522404e0a7aad66185c1273cb23738d985a291a"
+"@material/selection-control@file:../material-components-web/packages/mdc-selection-control/material-selection-control-0.44.0.tgz":
+  version "0.44.0"
+  resolved "file:../material-components-web/packages/mdc-selection-control/material-selection-control-0.44.0.tgz#008c0600a3682531c4ddb855e73c2a060c0acc20"
+  dependencies:
+    "@material/ripple" "^0.44.0"
 
 "@material/theme@^0.43.0":
   version "0.43.0"
   resolved "https://registry.yarnpkg.com/@material/theme/-/theme-0.43.0.tgz#6d9fa113c82e841817882172c152d60d2d203ca6"
   integrity sha512-/zndZL6EihI18v2mYd4O8xvOBAAXmLeHyHVK28LozSAaJ9okQgD25wq5Ktk95oMTmPIC+rH66KcK6371ivNk8g==
 
-"@material/typography@/usr/local/google/home/mmalerba/material-components-web/packages/mdc-typography/material-typography-0.44.0.tgz":
-  version "0.44.0"
-  resolved "/usr/local/google/home/mmalerba/material-components-web/packages/mdc-typography/material-typography-0.44.0.tgz#993afbe7458b307d9562f407f8f3dd6b4ac5b565"
-  dependencies:
-    "@material/feature-targeting" "^0.44.0"
+"@material/theme@file:../material-components-web/packages/mdc-theme/material-theme-0.43.0.tgz":
+  version "0.43.0"
+  resolved "file:../material-components-web/packages/mdc-theme/material-theme-0.43.0.tgz#0cfc7b4e13d8a75cad527db2e68682f2e8c90e9b"
 
 "@material/typography@^0.44.0":
   version "0.44.0"
   resolved "https://registry.yarnpkg.com/@material/typography/-/typography-0.44.0.tgz#cf61dce2ee89bfa084d86e1b0f270a585bf9dfaf"
   integrity sha512-m4SjA9OjZRDKowN3cPzEa8e2GlTlEn3ZmW/Fy9eRNSp83iY+8a0xl6kCaF80v5qAVwVcpfEFyEHWxMJtkBw2uA==
+
+"@material/typography@file:../material-components-web/packages/mdc-typography/material-typography-0.44.0.tgz":
+  version "0.44.0"
+  resolved "file:../material-components-web/packages/mdc-typography/material-typography-0.44.0.tgz#ffff05902f28a03013603333e43db76eefe4e08a"
+  dependencies:
+    "@material/feature-targeting" "^0.44.0"
 
 "@mrmlnc/readdir-enhanced@^2.2.1":
   version "2.2.1"

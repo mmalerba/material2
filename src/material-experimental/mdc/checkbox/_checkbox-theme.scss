@@ -1,5 +1,6 @@
 @import '@material/checkbox/mixins';
 @import '@material/ripple/mixins';
+@import '@material/ripple/variables';
 @import '@material/theme/functions';
 
 @import '../../../lib/core/theming/theming';
@@ -69,11 +70,35 @@
   @include mdc-checkbox($query: color);
 
   mat-mdc-checkbox {
+    .mdc-checkbox:hover .mdc-checkbox__background::before {
+      // TODO: get numbers from mdc variables
+      opacity: 0.04;
+      transform: scale(2.75, 2.75);
+      transition:
+          opacity 80ms 0s cubic-bezier(0, 0, 0.2, 1),
+          transform 80ms 0s cubic-bezier(0, 0, 0.2, 1);
+    }
+
+    .mdc-checkbox:hover .mdc-checkbox__native-control:focus~.mdc-checkbox__background::before {
+      // TODO: get numbers from mdc variables
+      opacity: 0.16;
+    }
+
+    .mat-ripple-element {
+      // TODO: get numbers from mdc variables
+      background: $accent;
+      opacity: 0.16;
+    }
+
     &.mat-primary {
       $mdc-checkbox-mark-color: mdc-theme-prop-value(on-primary) !global;
       $mdc-checkbox-baseline-theme-color: primary !global;
 
       @include mdc-checkbox($query: color);
+
+      .mat-ripple-element {
+        background: $primary;
+      }
     }
 
     &.mat-warn {
@@ -81,6 +106,10 @@
       $mdc-checkbox-baseline-theme-color: error !global;
 
       @include mdc-checkbox($query: color);
+
+      .mat-ripple-element {
+        background: $warn;
+      }
     }
   }
 }
