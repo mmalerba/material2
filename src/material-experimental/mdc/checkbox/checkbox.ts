@@ -17,18 +17,28 @@ import {
   EventEmitter,
   forwardRef,
   Input,
+  NgZone,
   OnDestroy,
   Output,
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
-import {MatCheckboxChange, MatRipple, RippleRef, ThemePalette} from '@angular/material';
+import {MatCheckboxChange, RippleRenderer, RippleTarget, ThemePalette} from '@angular/material';
 import {getCorrectEventName} from '@material/animation';
 import {MDCCheckboxAdapter, MDCCheckboxFoundation} from '@material/checkbox';
 import {MDCFormFieldFoundation} from '@material/form-field';
 import {MDCFormFieldAdapter} from '@material/form-field/adapter';
 import {MDCSelectionControl} from '@material/selection-control';
+// TODO: import once exported by MDC
+// import {numbers as rippleNumbers} from '@material/ripple';
+const rippleNumbers = {
+  DEACTIVATION_TIMEOUT_MS: 225,
+  FG_DEACTIVATION_MS: 150,
+  INITIAL_ORIGIN_SCALE: 0.6,
+  PADDING: 10,
+  TAP_DELAY_MS: 300
+};
 
 
 let nextUniqueId = 0;
@@ -59,27 +69,20 @@ export class MatMdcCheckbox implements AfterViewInit, OnDestroy, MDCSelectionCon
     ControlValueAccessor {
   @ViewChild('formField') formField: ElementRef<HTMLElement>;
   @ViewChild('checkbox', {read: ElementRef}) checkbox: ElementRef<HTMLElement>;
-  @ViewChild('checkbox', {read: MatRipple}) _ripple: MatRipple;
   @ViewChild('nativeCheckbox') nativeCheckbox: ElementRef<HTMLInputElement>;
   @ViewChild('label') label: ElementRef<HTMLLabelElement>;
 
   // TODO: fix type once it no longer has to be MDCRipple.
   ripple: any = {
     activate: () => {
-      if (!this._rippleRef) {
-        this._rippleRef = this._ripple.launch({});
+      if (!this.disableRipple) {
+        this._rippleRenderer.fadeInRipple(0, 0, this._rippleTarget.rippleConfig);
       }
+      this._cdr.markForCheck();
     },
-    deactivate:
-        () => {
-          if (this._rippleRef) {
-            this._rippleRef.fadeOut();
-            this._rippleRef = null;
-          }
-        },
+    deactivate: () => {},
     layout: () => {}
   };
-  private _rippleRef: RippleRef|null = null;
 
   private _checkboxFoundation: MDCCheckboxFoundation;
   private _formFieldFoundation: MDCFormFieldFoundation;
@@ -107,13 +110,11 @@ export class MatMdcCheckbox implements AfterViewInit, OnDestroy, MDCSelectionCon
     isAttachedToDOM: () => !!this.checkbox.nativeElement.parentNode,
   };
 
-  private _formFieldAdapter: MDCFormFieldAdapter = {
+  private _formFieldAdapter: Partial<MDCFormFieldAdapter> = {
     registerInteractionHandler: (type, handler) =>
         this.label.nativeElement.addEventListener(type, handler),
     deregisterInteractionHandler: (type, handler) =>
-        this.label.nativeElement.removeEventListener(type, handler),
-    activateInputRipple: () => this.ripple.activate(),
-    deactivateInputRipple: () => this.ripple.deactivate()
+        this.label.nativeElement.removeEventListener(type, handler)
   };
 
   @Input('aria-label') ariaLabel: string = '';
@@ -187,10 +188,28 @@ export class MatMdcCheckbox implements AfterViewInit, OnDestroy, MDCSelectionCon
 
   private _cvaOnChange = (_: boolean) => {};
   private _cvaOnTouch = () => {};
+  private _rippleTarget: RippleTarget;
+  private _rippleRenderer: RippleRenderer;
 
-  constructor(private _platform: Platform, private _cdr: ChangeDetectorRef) {}
+  constructor(
+      private _platform: Platform, private _cdr: ChangeDetectorRef, private _ngZone: NgZone) {}
 
   ngAfterViewInit() {
+    this._rippleTarget = {
+      rippleConfig: {
+        // TODO: get number from MDC
+        radius: 20,
+        centered: true,
+        animation: {
+          enterDuration: rippleNumbers.DEACTIVATION_TIMEOUT_MS,
+          exitDuration: rippleNumbers.FG_DEACTIVATION_MS
+        },
+      },
+      rippleDisabled: true
+    };
+    this._rippleRenderer =
+        new RippleRenderer(this._rippleTarget, this._ngZone, this.checkbox, this._platform);
+
     this._checkboxFoundation = new MDCCheckboxFoundation(this._checkboxAdapter);
     this._formFieldFoundation = new MDCFormFieldFoundation(this._formFieldAdapter);
     this._checkboxFoundation.init();
