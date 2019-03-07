@@ -29,7 +29,6 @@ import {getCorrectEventName} from '@material/animation';
 import {MDCCheckboxAdapter, MDCCheckboxFoundation} from '@material/checkbox';
 import {MDCFormFieldFoundation} from '@material/form-field';
 import {MDCFormFieldAdapter} from '@material/form-field/adapter';
-import {MDCSelectionControl} from '@material/selection-control';
 // TODO: import once exported by MDC
 // import {numbers as rippleNumbers} from '@material/ripple';
 const rippleNumbers = {
@@ -65,8 +64,7 @@ export const MAT_MDC_CHECKBOX_CONTROL_VALUE_ACCESSOR: any = {
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class MatMdcCheckbox implements AfterViewInit, OnDestroy, MDCSelectionControl,
-    ControlValueAccessor {
+export class MatMdcCheckbox implements AfterViewInit, OnDestroy, ControlValueAccessor {
   @ViewChild('formField') formField: ElementRef<HTMLElement>;
   @ViewChild('checkbox', {read: ElementRef}) checkbox: ElementRef<HTMLElement>;
   @ViewChild('nativeCheckbox') nativeCheckbox: ElementRef<HTMLInputElement>;
@@ -177,7 +175,7 @@ export class MatMdcCheckbox implements AfterViewInit, OnDestroy, MDCSelectionCon
 
   @Input() tabIndex = 0;
 
-  @Input() color: ThemePalette = 'primary';
+  @Input() color: ThemePalette = 'accent';
 
   @Input() disableRipple: boolean = false;
 

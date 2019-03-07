@@ -67,7 +67,8 @@
   $mdc-checkbox-disabled-color: rgba(mdc-theme-prop-value(on-surface), .26) !global;
   $mdc-checkbox-baseline-theme-color: secondary !global;
 
-  @include mdc-checkbox($query: color);
+  // TODO: switch to mdc-checkbox-without-ripple
+  @include mdc-checkbox-core-styles($query: color);
 
   mat-mdc-checkbox {
     .mdc-checkbox:hover .mdc-checkbox__background::before {
@@ -94,7 +95,8 @@
       $mdc-checkbox-mark-color: mdc-theme-prop-value(on-primary) !global;
       $mdc-checkbox-baseline-theme-color: primary !global;
 
-      @include mdc-checkbox($query: color);
+      // TODO: switch to mdc-checkbox-without-ripple
+      @include mdc-checkbox-core-styles($query: color);
 
       .mat-ripple-element {
         background: $primary;
@@ -105,7 +107,8 @@
       $mdc-checkbox-mark-color: mdc-theme-prop-value(on-error) !global;
       $mdc-checkbox-baseline-theme-color: error !global;
 
-      @include mdc-checkbox($query: color);
+      // TODO: switch to mdc-checkbox-without-ripple
+      @include mdc-checkbox-core-styles($query: color);
 
       .mat-ripple-element {
         background: $warn;
@@ -115,5 +118,7 @@
 }
 
 @mixin mat-mdc-checkbox-typography($config) {
-  @include mdc-checkbox($query: typography);
+  // TODO: use $config to set MDC globals
+  // TODO: switch to mdc-checkbox-without-ripple
+  @include mdc-checkbox-core-styles($query: typography);
 }
