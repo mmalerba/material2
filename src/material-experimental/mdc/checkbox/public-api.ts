@@ -6,5 +6,5 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
-export * from './mdc/checkbox/index';
-export * from './version';
+export * from './checkbox';
+export * from './module';
