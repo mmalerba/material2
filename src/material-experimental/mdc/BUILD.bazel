@@ -1,0 +1,27 @@
+package(default_visibility=["//visibility:public"])
+
+load("@io_bazel_rules_sass//:defs.bzl", "sass_library")
+
+# Add all MDC Sass files that we depend on here.
+# TODO(mmalerba): Find a less tedious way to do this...
+sass_library(
+  name = "mdc_scss_deps_lib",
+  srcs = [
+    "@npm//node_modules/@material/feature-targeting:_functions.scss",
+    "@npm//node_modules/@material/feature-targeting:_variables.scss",
+    "@npm//node_modules/@material/theme:_constants.scss",
+    "@npm//node_modules/@material/theme:_functions.scss",
+    "@npm//node_modules/@material/theme:_variables.scss",
+    "@npm//node_modules/@material/typography:_functions.scss",
+    "@npm//node_modules/@material/typography:_variables.scss",
+  ],
+)
+
+sass_library(
+  name = "mdc_helper_scss_lib",
+  srcs = glob(["**/_*.scss"]),
+  deps = [
+    ":mdc_scss_deps_lib",
+    "//src/lib/core:core_scss_lib",
+  ],
+)
