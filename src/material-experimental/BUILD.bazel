@@ -1,5 +1,6 @@
 package(default_visibility=["//visibility:public"])
 
+load("@io_bazel_rules_sass//:defs.bzl", "sass_library")
 load("//tools:defaults.bzl", "ng_module", "ng_package")
 load("//:packages.bzl", "ROLLUP_GLOBALS")
 
@@ -20,4 +21,11 @@ ng_package(
   deps = [":material-experimental"],
   # TODO(devversion): re-enable once we have set up the proper compiler for the ng_package
   tags = ["manual"],
+)
+
+sass_library(
+  name = "scss_lib",
+  srcs = [
+    "//src/material-experimental/mdc/checkbox:checkbox_scss_lib",
+  ],
 )
