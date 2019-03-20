@@ -9,6 +9,7 @@ ng_module(
   srcs = glob(["*.ts"], exclude=["**/*.spec.ts"]),
   module_name = "@angular/material-experimental",
   deps = [
+    "@npm//@angular/forms",
     "//src/material-experimental/mdc/checkbox",
   ],
 )
