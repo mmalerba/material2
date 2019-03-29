@@ -32,8 +32,13 @@ ng_module(
 sass_binary(
   name = "theme",
   src = "theme.scss",
+  include_paths = [
+    "external/npm/node_modules",
+  ],
   deps = [
-    "//src/lib/core:all_themes"
+    "//src/lib/core:all_themes",
+    "//src/material-experimental/mdc:mdc_scss_deps_lib",
+    "//src/material-experimental:scss_lib",
   ]
 )
 
