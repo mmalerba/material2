@@ -585,7 +585,9 @@ export class TooltipComponent implements OnDestroy {
 
     // Body interactions should cancel the tooltip if there is a delay in showing.
     this._closeOnInteraction = true;
+    console.log('setting show timeout');
     this._showTimeoutId = setTimeout(() => {
+      console.log('show timeout');
       this._visibility = 'visible';
       this._showTimeoutId = null;
 
@@ -606,7 +608,9 @@ export class TooltipComponent implements OnDestroy {
       this._showTimeoutId = null;
     }
 
+    console.log('setting hide timeout');
     this._hideTimeoutId = setTimeout(() => {
+      console.log('hide timeout');
       this._visibility = 'hidden';
       this._hideTimeoutId = null;
 
@@ -635,6 +639,7 @@ export class TooltipComponent implements OnDestroy {
   }
 
   _animationDone(event: AnimationEvent): void {
+    console.log('animation done', `${event.fromState} -> ${event.toState}`, this.isVisible());
     const toState = event.toState as TooltipVisibility;
 
     if (toState === 'hidden' && !this.isVisible()) {

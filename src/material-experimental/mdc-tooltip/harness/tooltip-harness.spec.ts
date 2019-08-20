@@ -65,14 +65,17 @@ function runTests() {
 
   // TODO(crisbeto): this fails because we have a setTimeout inside the tooltip which
   // can't be flushed. Talk to Miles about how we should approach this in harnesses.
-  // it('should be able to close a tooltip', async () => {
-  //   const tooltip = await loader.getHarness(harness.with({id: 'one'}));
-  //   expect(await tooltip.isOpen()).toBe(false);
-  //   await tooltip.open();
-  //   expect(await tooltip.isOpen()).toBe(true);
-  //   await tooltip.close();
-  //   expect(await tooltip.isOpen()).toBe(false);
-  // });
+  fit('should be able to close a tooltip', async () => {
+    console.log('start test');
+    const tooltip = await loader.getHarness(harness.with({id: 'one'}));
+    expect(await tooltip.isOpen()).toBe(false);
+    await tooltip.open();
+    expect(await tooltip.isOpen()).toBe(true);
+    await tooltip.close();
+    console.log('check open');
+    expect(await tooltip.isOpen()).toBe(false);
+    console.log('end test');
+  });
 
   it('should be able to get the text of a tooltip', async () => {
     const tooltip = await loader.getHarness(harness.with({id: 'one'}));
