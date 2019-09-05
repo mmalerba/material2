@@ -90,6 +90,9 @@ export class MatSliderChange {
     '[class.mdc-slider--discrete]': 'thumbLabel',
     '[class.mat-slider-has-ticks]': 'tickInterval !== 0',
     '[class.mat-slider-thumb-label-showing]': 'thumbLabel',
+    // Class binding which is only used by the test harness as there is no other
+    // way for the harness to detect if mouse coordinates need to be inverted.
+    '[class.mat-slider-invert-mouse-coords]': '_isRtl()',
     '[class.mat-slider-disabled]': 'disabled',
     '[class.mat-primary]': 'color == "primary"',
     '[class.mat-accent]': 'color == "accent"',
@@ -298,7 +301,7 @@ export class MatSlider implements AfterViewInit, OnChanges, OnDestroy, ControlVa
           this._trackMarker.nativeElement.style.setProperty(
               'background', this._getTrackMarkersBackground(min, max, step));
         },
-    isRTL: () => this._dir && this._dir.value === 'rtl',
+    isRTL: () => this._isRtl(),
   };
 
   /** Instance of the MDC slider foundation for this slider. */
@@ -335,7 +338,7 @@ export class MatSlider implements AfterViewInit, OnChanges, OnDestroy, ControlVa
         // client rectangle wouldn't reflect the new directionality.
         // TODO(devversion): ideally the MDC slider would just compute dimensions similarly
         // to the standard Material slider on "mouseenter".
-        this._ngZone.runOutsideAngular(() => setTimeout(() => this._foundation.layout()));
+        setTimeout(() => this._foundation.layout());
       });
     }
   }
@@ -352,10 +355,12 @@ export class MatSlider implements AfterViewInit, OnChanges, OnDestroy, ControlVa
     (this._foundation as any).isDiscrete_ = true;
 
     this._syncStep();
-    this._syncValue();
     this._syncMax();
     this._syncMin();
     this._syncDisabled();
+    // Note that "value" needs to be synced after "max" and "min" because otherwise
+    // the value will be clamped by the MDC foundation implementation.
+    this._syncValue();
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -474,6 +479,11 @@ export class MatSlider implements AfterViewInit, OnChanges, OnDestroy, ControlVa
   /** Syncs the "disabled" input value with the MDC foundation. */
   private _syncDisabled() {
     this._foundation.setDisabled(this.disabled);
+  }
+
+  /** Whether the slider is displayed in RTL-mode. */
+  _isRtl(): boolean {
+    return this._dir && this._dir.value === 'rtl';
   }
 
   /**
