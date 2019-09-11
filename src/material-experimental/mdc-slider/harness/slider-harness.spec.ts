@@ -1,7 +1,7 @@
 import {HarnessLoader} from '@angular/cdk-experimental/testing';
 import {TestbedHarnessEnvironment} from '@angular/cdk-experimental/testing/testbed';
 import {Component, CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {async, ComponentFixture, fakeAsync, flush, TestBed, tick} from '@angular/core/testing';
 import {MatSliderModule} from '@angular/material/slider';
 import {MatSliderModule as MatMdcSliderModule} from '../module';
 import {MatSliderHarness as MatMdcSliderHarness} from './mdc-slider-harness';
@@ -10,6 +10,8 @@ import {MatSliderHarness} from './slider-harness';
 let fixture: ComponentFixture<SliderHarnessTest>;
 let loader: HarnessLoader;
 let sliderHarness: typeof MatSliderHarness;
+
+declare const Zone: any;
 
 describe('MatSliderHarness', () => {
   describe('non-MDC-based', () => {
@@ -54,6 +56,23 @@ describe('MatSliderHarness', () => {
         // MDC slider does not support vertical or inverted sliders.
         createTests(false, false);
       });
+});
+
+function getTestMode() {
+  const _Zone: any = typeof Zone !== 'undefined' ? Zone : null;
+  const ProxyZoneSpec = _Zone && _Zone['ProxyZoneSpec'];
+  const FakeAsyncTestZoneSpec = _Zone && _Zone['FakeAsyncTestZoneSpec'];
+  const AsyncTestZoneSpec = _Zone && _Zone['AsyncTestZoneSpec'];
+  const proxyZoneSpec = ProxyZoneSpec.assertPresent();
+  const delegate = proxyZoneSpec.getDelegate();
+  return delegate instanceof FakeAsyncTestZoneSpec ? 'fakeAsync' :
+      delegate instanceof AsyncTestZoneSpec ? 'async' : 'default';
+}
+
+describe('zone checks', () => {
+  it('default', async () => expect(getTestMode()).toBe('default'));
+  it('async', async(async () => expect(getTestMode()).toBe('async')));
+  it('fake async', fakeAsync(async () => expect(getTestMode()).toBe('fakeAsync')));
 });
 
 /** Shared tests to run on both the original and MDC-based sliders. */
@@ -148,7 +167,7 @@ function createTests(supportsVertical: boolean, supportsInvert: boolean) {
     expect(await sliders[2].getValue()).toBe(250);
   });
 
-  it('should be able to set value of slider in rtl', async () => {
+  fit('should be able to set value of slider in rtl', async () => {
     const sliders = await loader.getAllHarnesses(sliderHarness);
     expect(await sliders[1].getValue()).toBe(0);
     expect(await sliders[2].getValue()).toBe(225);

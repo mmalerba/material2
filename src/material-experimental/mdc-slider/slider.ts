@@ -338,7 +338,7 @@ export class MatSlider implements AfterViewInit, OnChanges, OnDestroy, ControlVa
         // client rectangle wouldn't reflect the new directionality.
         // TODO(devversion): ideally the MDC slider would just compute dimensions similarly
         // to the standard Material slider on "mouseenter".
-        setTimeout(() => this._foundation.layout());
+        this._ngZone.runOutsideAngular(() => setTimeout(() => this._foundation.layout()));
       });
     }
   }

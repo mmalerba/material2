@@ -6,11 +6,24 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
-import {ComponentFixture} from '@angular/core/testing';
+import {ComponentFixture, flush} from '@angular/core/testing';
 import {ComponentHarness, ComponentHarnessConstructor, HarnessLoader} from '../component-harness';
 import {HarnessEnvironment} from '../harness-environment';
 import {TestElement} from '../test-element';
 import {UnitTestElement} from './unit-test-element';
+
+declare const Zone: any;
+
+function getTestMode() {
+  const _Zone: any = typeof Zone !== 'undefined' ? Zone : null;
+  const ProxyZoneSpec = _Zone && _Zone['ProxyZoneSpec'];
+  const FakeAsyncTestZoneSpec = _Zone && _Zone['FakeAsyncTestZoneSpec'];
+  const AsyncTestZoneSpec = _Zone && _Zone['AsyncTestZoneSpec'];
+  const proxyZoneSpec = ProxyZoneSpec.assertPresent();
+  const delegate = proxyZoneSpec.getDelegate();
+  return delegate instanceof FakeAsyncTestZoneSpec ? 'fakeAsync' :
+      delegate instanceof AsyncTestZoneSpec ? 'async' : 'default';
+}
 
 /** A `HarnessEnvironment` implementation for Angular's Testbed. */
 export class TestbedHarnessEnvironment extends HarnessEnvironment<Element> {
@@ -55,6 +68,30 @@ export class TestbedHarnessEnvironment extends HarnessEnvironment<Element> {
 
   private async _stabilize(): Promise<void> {
     this._fixture.detectChanges();
-    await this._fixture.whenStable();
+    if (getTestMode() === 'default') {
+      await this._fixture.whenStable();
+    } else if (getTestMode() === 'fakeAsync') {
+      flush();
+    } else {
+      let onStableFn: () => void;
+      let zoneStable = new Promise(res => onStableFn = res);
+
+      if ((window as any).Zone) {
+        const targetZone = (window as any).Zone.current;
+        const org = (window as any).Zone.current._zoneDelegate.hasTask;
+        (window as any).Zone.current._zoneDelegate.hasTask = function(currentZone: any, data: any) {
+          if (currentZone === targetZone) {
+            if (!data.macroTask && !data.microTask) {
+              onStableFn();
+              // Reset interception.
+              (window as any).Zone.current._zoneDelegate.hasTask = org;
+            }
+          }
+          org.apply(this, arguments);
+        };
+      }
+
+      await zoneStable;
+    }
   }
 }
