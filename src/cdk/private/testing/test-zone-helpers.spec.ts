@@ -1,5 +1,5 @@
 import {Component, ElementRef, NgZone} from '@angular/core';
-import {async, fakeAsync, TestBed} from '@angular/core/testing';
+import {async, fakeAsync, flush, TestBed} from '@angular/core/testing';
 import {detectTestZoneType, proxyZoneStable} from './test-zone-helpers';
 
 describe('detectTestZoneType', () => {
@@ -94,6 +94,41 @@ describe('proxyZoneStable', () => {
   }));
 });
 
+fdescribe('repro', () => {
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [OutsideNgZoneTest]
+    }).compileComponents();
+  });
+
+  it('done should not wait for task outside of zone', done => {
+    const fixture = TestBed.createComponent(OutsideNgZoneTest);
+    const el = fixture.debugElement.nativeElement;
+    fixture.detectChanges();
+    fixture.whenStable().then(() => {
+      expect(el.classList.contains('timeout-done')).toBe(false);
+      done();
+    });
+  });
+
+  it('fakeAsync should wait for task outside of zone', fakeAsync(() => {
+    const fixture = TestBed.createComponent(OutsideNgZoneTest);
+    const el = fixture.debugElement.nativeElement;
+    fixture.detectChanges();
+    flush();
+    expect(el.classList.contains('timeout-done')).toBe(true);
+  }));
+
+  it('async should wait for task outside of zone', async(() => {
+    const fixture = TestBed.createComponent(OutsideNgZoneTest);
+    const el = fixture.debugElement.nativeElement;
+    fixture.detectChanges();
+    fixture.whenStable().then(() => {
+      expect(el.classList.contains('timeout-done')).toBe(true);
+    });
+  }));
+});
+
 @Component({template: ''})
 export class InsideNgZoneTest {
   constructor(el: ElementRef) {
@@ -105,6 +140,6 @@ export class InsideNgZoneTest {
 export class OutsideNgZoneTest {
   constructor(el: ElementRef, ngZone: NgZone) {
     ngZone.runOutsideAngular(() =>
-        setTimeout(() => el.nativeElement.classList.add('timeout-done')));
+        Promise.resolve().then(() => el.nativeElement.classList.add('timeout-done')));
   }
 }
