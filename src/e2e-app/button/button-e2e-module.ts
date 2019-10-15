@@ -7,7 +7,7 @@
  */
 
 import {NgModule} from '@angular/core';
-import {MatButtonModule} from '@angular/material/button';
+import {MatButtonModule, MyComponentModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
 import {ButtonE2E} from './button-e2e';
 
@@ -15,6 +15,7 @@ import {ButtonE2E} from './button-e2e';
   imports: [
     MatButtonModule,
     MatIconModule,
+    MyComponentModule,
   ],
   declarations: [ButtonE2E],
 })

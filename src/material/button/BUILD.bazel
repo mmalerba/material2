@@ -23,6 +23,7 @@ ng_module(
     deps = [
         "//src/cdk/a11y",
         "//src/material/core",
+        "//src/cdk/testing",
         "@npm//@angular/animations",
         "@npm//@angular/common",
         "@npm//@angular/core",
@@ -55,6 +56,8 @@ ng_test_library(
     deps = [
         ":button",
         "//src/material/core",
+        "//src/cdk/testing",
+        "//src/cdk/testing/testbed",
         "@npm//@angular/platform-browser",
     ],
 )
@@ -69,6 +72,8 @@ ng_e2e_test_library(
     srcs = glob(["**/*.e2e.spec.ts"]),
     deps = [
         "//src/cdk/private/testing/e2e",
+        "//src/cdk/testing/protractor",
+        ":button",
     ],
 )
 
