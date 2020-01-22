@@ -27,6 +27,7 @@ import {
 } from '@angular/forms';
 import {
   DateAdapter,
+  ExtractDateTypeFromSelection,
   MAT_DATE_FORMATS,
   MatDateFormats,
   MatDateSelectionModel,
@@ -39,13 +40,13 @@ import {createMissingDateImplError} from './datepicker-errors';
  * input or change event because the event may have been triggered by the user clicking on the
  * calendar popup. For consistency, we always use MatDatepickerInputEvent instead.
  */
-export class MatDatepickerInputEvent<D, S = D> {
+export class MatDatepickerInputEvent<D, S = unknown> {
   /** The new value for the target datepicker input. */
   value: D | null;
 
   constructor(
       /** Reference to the datepicker input component that emitted the event. */
-      public target: MatDatepickerInputBase<D, S>,
+      public target: MatDatepickerInputBase<S, D>,
       /** Reference to the native input element associated with the datepicker input. */
       public targetElement: HTMLElement) {
     this.value = this.target.value;
@@ -54,7 +55,7 @@ export class MatDatepickerInputEvent<D, S = D> {
 
 /** Base class for datepicker inputs. */
 @Directive()
-export abstract class MatDatepickerInputBase<D, S = D>
+export abstract class MatDatepickerInputBase<S, D = ExtractDateTypeFromSelection<S>>
   implements ControlValueAccessor, OnDestroy, Validator {
   /** The value of the input. */
   @Input()

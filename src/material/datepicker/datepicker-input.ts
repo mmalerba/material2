@@ -7,14 +7,7 @@
  */
 
 import {BooleanInput} from '@angular/cdk/coercion';
-import {
-  Directive,
-  ElementRef,
-  forwardRef,
-  Inject,
-  Input,
-  Optional,
-} from '@angular/core';
+import {Directive, ElementRef, forwardRef, Inject, Input, Optional} from '@angular/core';
 import {
   AbstractControl,
   NG_VALIDATORS,
@@ -23,12 +16,7 @@ import {
   ValidatorFn,
   Validators,
 } from '@angular/forms';
-import {
-  DateAdapter,
-  MAT_DATE_FORMATS,
-  MatDateFormats,
-  ThemePalette,
-} from '@angular/material/core';
+import {DateAdapter, MAT_DATE_FORMATS, MatDateFormats, ThemePalette} from '@angular/material/core';
 import {MatFormField} from '@angular/material/form-field';
 import {MAT_INPUT_VALUE_ACCESSOR} from '@angular/material/input';
 import {MatDatepicker} from './datepicker';
@@ -69,7 +57,7 @@ export const MAT_DATEPICKER_VALIDATORS: any = {
   },
   exportAs: 'matDatepickerInput',
 })
-export class MatDatepickerInput<D> extends MatDatepickerInputBase<D | null> {
+export class MatDatepickerInput<D> extends MatDatepickerInputBase<D | null, D> {
   /** The datepicker that this input is associated with. */
   @Input()
   set matDatepicker(datepicker: MatDatepicker<D>) {

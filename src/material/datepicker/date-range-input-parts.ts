@@ -6,38 +6,38 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
+import {BooleanInput} from '@angular/cdk/coercion';
 import {
   Directive,
-  ElementRef,
-  Optional,
-  InjectionToken,
-  Inject,
-  OnInit,
-  Injector,
-  InjectFlags,
   DoCheck,
+  ElementRef,
+  Inject,
+  InjectFlags,
+  InjectionToken,
+  Injector,
+  OnInit,
+  Optional,
 } from '@angular/core';
 import {
-  NG_VALUE_ACCESSOR,
-  NG_VALIDATORS,
-  NgForm,
   FormGroupDirective,
+  NG_VALIDATORS,
+  NG_VALUE_ACCESSOR,
   NgControl,
+  NgForm,
   ValidatorFn,
   Validators,
 } from '@angular/forms';
 import {
   CanUpdateErrorState,
   CanUpdateErrorStateCtor,
-  mixinErrorState,
-  MAT_DATE_FORMATS,
   DateAdapter,
-  MatDateFormats,
-  ErrorStateMatcher,
   DateRange,
-  MatDateSelectionModel,
+  ErrorStateMatcher,
+  MAT_DATE_FORMATS,
+  MatDateFormats,
+  MatRangeDateSelectionModel,
+  mixinErrorState,
 } from '@angular/material/core';
-import {BooleanInput} from '@angular/cdk/coercion';
 import {MatDatepickerInputBase} from './datepicker-input-base';
 
 /** Parent component that should be wrapped around `MatStartDate` and `MatEndDate`. */
@@ -61,7 +61,7 @@ export const MAT_DATE_RANGE_INPUT_PARENT =
  */
 @Directive()
 class MatDateRangeInputPartBase<D>
-  extends MatDatepickerInputBase<D | null, DateRange<D | null>> implements OnInit, DoCheck {
+  extends MatDatepickerInputBase<DateRange<D>, D> implements OnInit, DoCheck {
 
   /** @docs-private */
   ngControl: NgControl;
@@ -81,7 +81,7 @@ class MatDateRangeInputPartBase<D>
 
     // TODO(crisbeto): this will be provided by the datepicker eventually.
     // We provide it here for the moment so we have something to test against.
-    model: MatDateSelectionModel<DateRange<D | null>>) {
+    model: MatRangeDateSelectionModel<D>) {
     super(elementRef, dateAdapter, dateFormats);
     super._registerModel(model);
   }
@@ -134,7 +134,7 @@ class MatDateRangeInputPartBase<D>
   // into a mixin. These are overridden by the individual input classes.
   protected _validator: ValidatorFn | null;
   protected _assignValueToModel: (value: D | null) => void;
-  protected _getValueFromModel: (modelValue: DateRange<D | null>) => D | null;
+  protected _getValueFromModel: (modelValue: DateRange<D>) => D | null;
 }
 
 const _MatDateRangeInputBase:
@@ -166,11 +166,11 @@ const _MatDateRangeInputBase:
     {provide: NG_VALIDATORS, useExisting: MatStartDate, multi: true}
   ]
 })
-export class MatStartDate<D> extends _MatDateRangeInputBase<D | null>
+export class MatStartDate<D> extends _MatDateRangeInputBase<D>
   implements CanUpdateErrorState {
   // TODO(crisbeto): start-range-specific validators should go here.
   protected _validator = Validators.compose([this._parseValidator]);
-  protected _getValueFromModel = (modelValue: DateRange<D | null>) => modelValue.start;
+  protected _getValueFromModel = (modelValue: DateRange<D>) => modelValue.start;
   protected _assignValueToModel = (value: D | null) => {
     if (this._model) {
       this._model.updateSelection(new DateRange(value, this._model.selection.end), this);
@@ -213,10 +213,10 @@ export class MatStartDate<D> extends _MatDateRangeInputBase<D | null>
     {provide: NG_VALIDATORS, useExisting: MatEndDate, multi: true}
   ]
 })
-export class MatEndDate<D> extends _MatDateRangeInputBase<D | null> implements CanUpdateErrorState {
+export class MatEndDate<D> extends _MatDateRangeInputBase<D> implements CanUpdateErrorState {
   // TODO(crisbeto): end-range-specific validators should go here.
   protected _validator = Validators.compose([this._parseValidator]);
-  protected _getValueFromModel = (modelValue: DateRange<D | null>) => modelValue.end;
+  protected _getValueFromModel = (modelValue: DateRange<D>) => modelValue.end;
   protected _assignValueToModel = (value: D | null) => {
     if (this._model) {
       this._model.updateSelection(new DateRange(this._model.selection.start, value), this);

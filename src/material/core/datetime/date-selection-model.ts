@@ -6,9 +6,9 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
-import {FactoryProvider, Injectable, Optional, SkipSelf, OnDestroy} from '@angular/core';
-import {DateAdapter} from './date-adapter';
+import {FactoryProvider, Injectable, OnDestroy, Optional, SkipSelf} from '@angular/core';
 import {Observable, Subject} from 'rxjs';
+import {DateAdapter} from './date-adapter';
 
 /** A class representing a range of dates. */
 export class DateRange<D> {
@@ -26,7 +26,7 @@ export class DateRange<D> {
     readonly end: D | null) {}
 }
 
-type ExtractDateTypeFromSelection<T> = T extends DateRange<infer D> ? D : NonNullable<T>;
+export type ExtractDateTypeFromSelection<T> = T extends DateRange<infer D> ? D : NonNullable<T>;
 
 /** Event emitted by the date selection model when its selection changes. */
 export interface DateSelectionModelChange<S> {
