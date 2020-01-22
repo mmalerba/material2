@@ -213,3 +213,17 @@ export const MAT_SINGLE_DATE_SELECTION_MODEL_PROVIDER: FactoryProvider = {
   deps: [[new Optional(), new SkipSelf(), MatDateSelectionModel], DateAdapter],
   useFactory: MAT_SINGLE_DATE_SELECTION_MODEL_FACTORY,
 };
+
+
+/** @docs-private */
+export function MAT_RANGE_DATE_SELECTION_MODEL_FACTORY(
+    parent: MatSingleDateSelectionModel<unknown>, adapter: DateAdapter<unknown>) {
+  return parent || new MatRangeDateSelectionModel(adapter);
+}
+
+/** Used to provide a range selection model to a component. */
+export const MAT_RANGE_DATE_SELECTION_MODEL_PROVIDER: FactoryProvider = {
+  provide: MatDateSelectionModel,
+  deps: [[new Optional(), new SkipSelf(), MatDateSelectionModel], DateAdapter],
+  useFactory: MAT_RANGE_DATE_SELECTION_MODEL_FACTORY,
+};

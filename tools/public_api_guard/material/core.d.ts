@@ -211,6 +211,10 @@ export declare const MAT_NATIVE_DATE_FORMATS: MatDateFormats;
 
 export declare const MAT_OPTION_PARENT_COMPONENT: InjectionToken<MatOptionParentComponent>;
 
+export declare function MAT_RANGE_DATE_SELECTION_MODEL_FACTORY(parent: MatSingleDateSelectionModel<unknown>, adapter: DateAdapter<unknown>): MatSingleDateSelectionModel<unknown>;
+
+export declare const MAT_RANGE_DATE_SELECTION_MODEL_PROVIDER: FactoryProvider;
+
 export declare const MAT_RIPPLE_GLOBAL_OPTIONS: InjectionToken<RippleGlobalOptions>;
 
 export declare function MAT_SINGLE_DATE_SELECTION_MODEL_FACTORY(parent: MatSingleDateSelectionModel<unknown>, adapter: DateAdapter<unknown>): MatSingleDateSelectionModel<unknown>;

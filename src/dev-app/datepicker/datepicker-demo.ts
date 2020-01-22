@@ -59,8 +59,8 @@ export class DatepickerDemo {
       return !(date.getFullYear() % 2) && Boolean(date.getMonth() % 2) && !(date.getDate() % 2);
     }
 
-  onDateInput = (e: MatDatepickerInputEvent<Date>) => this.lastDateInput = e.value;
-  onDateChange = (e: MatDatepickerInputEvent<Date>) => this.lastDateChange = e.value;
+  onDateInput = (e: MatDatepickerInputEvent<Date | null>) => this.lastDateInput = e.value;
+  onDateChange = (e: MatDatepickerInputEvent<Date | null>) => this.lastDateChange = e.value;
 
   // pass custom header component type as input
   customHeader = CustomHeader;

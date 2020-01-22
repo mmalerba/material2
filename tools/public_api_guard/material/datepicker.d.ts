@@ -156,7 +156,7 @@ export declare class MatDatepickerContent<D> extends _MatDatepickerContentMixinB
     static ɵfac: i0.ɵɵFactoryDef<MatDatepickerContent<any>>;
 }
 
-export declare class MatDatepickerInput<D> extends MatDatepickerInputBase<D> {
+export declare class MatDatepickerInput<D> extends MatDatepickerInputBase<D | null> {
     _dateFilter: (date: D | null) => boolean;
     _datepicker: MatDatepicker<D>;
     protected _validator: ValidatorFn | null;
@@ -165,8 +165,9 @@ export declare class MatDatepickerInput<D> extends MatDatepickerInputBase<D> {
     max: D | null;
     min: D | null;
     constructor(elementRef: ElementRef<HTMLInputElement>, dateAdapter: DateAdapter<D>, dateFormats: MatDateFormats, _formField: MatFormField);
-    protected _assignModelValue(value: D | null): void;
+    protected _assignValueToModel(value: D | null): void;
     _getThemePalette(): ThemePalette;
+    protected _getValueFromModel(modelValue: D | null): D | null;
     protected _openPopup(): void;
     getConnectedOverlayOrigin(): ElementRef;
     getPopupConnectionElementRef(): ElementRef;
@@ -176,12 +177,12 @@ export declare class MatDatepickerInput<D> extends MatDatepickerInputBase<D> {
     static ɵfac: i0.ɵɵFactoryDef<MatDatepickerInput<any>>;
 }
 
-export declare class MatDatepickerInputEvent<D> {
-    target: MatDatepickerInputBase<D>;
+export declare class MatDatepickerInputEvent<D, S = D> {
+    target: MatDatepickerInputBase<D, S>;
     targetElement: HTMLElement;
     value: D | null;
     constructor(
-    target: MatDatepickerInputBase<D>,
+    target: MatDatepickerInputBase<D, S>,
     targetElement: HTMLElement);
 }
 
@@ -264,7 +265,9 @@ export declare class MatDateRangeInput<D> implements MatFormFieldControl<DateRan
     static ɵfac: i0.ɵɵFactoryDef<MatDateRangeInput<any>>;
 }
 
-export declare class MatEndDate<D> extends _MatDateRangeInputBase<D> implements CanUpdateErrorState {
+export declare class MatEndDate<D> extends _MatDateRangeInputBase<D | null> implements CanUpdateErrorState {
+    protected _assignValueToModel: (value: D | null) => void;
+    protected _getValueFromModel: (modelValue: DateRange<D | null>) => D | null;
     protected _validator: ValidatorFn | null;
     static ngAcceptInputType_disabled: BooleanInput;
     static ɵdir: i0.ɵɵDirectiveDefWithMeta<MatEndDate<any>, "input[matEndDate]", never, {}, {}, never>;
@@ -329,7 +332,9 @@ export declare class MatMultiYearView<D> implements AfterContentInit, OnDestroy 
     static ɵfac: i0.ɵɵFactoryDef<MatMultiYearView<any>>;
 }
 
-export declare class MatStartDate<D> extends _MatDateRangeInputBase<D> implements CanUpdateErrorState {
+export declare class MatStartDate<D> extends _MatDateRangeInputBase<D | null> implements CanUpdateErrorState {
+    protected _assignValueToModel: (value: D | null) => void;
+    protected _getValueFromModel: (modelValue: DateRange<D | null>) => D | null;
     protected _validator: ValidatorFn | null;
     getMirrorValue(): string;
     static ngAcceptInputType_disabled: BooleanInput;
