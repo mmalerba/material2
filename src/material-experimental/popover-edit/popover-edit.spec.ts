@@ -177,7 +177,7 @@ class ElementDataSource extends DataSource<PeriodicElement> {
 
 @Component({
   template: `
-  <div #table style="margin: 16px">
+  <div #table style="margin: 16px; max-width: 90vw; max-height: 90vh;">
     <mat-table editable [dataSource]="dataSource">
       <ng-container matColumnDef="before">
         <mat-cell *matCellDef="let element">
@@ -551,9 +551,9 @@ matPopoverEditTabOut`, fakeAsync(() => {
              const paneRect = component.getEditPane()!.getBoundingClientRect();
              const cellRect = component.getEditCell().getBoundingClientRect();
 
-             expect(paneRect.width).toBe(cellRect.width);
-             expect(paneRect.left).toBe(cellRect.left);
-             expect(paneRect.top).toBe(cellRect.top);
+             expect(paneRect.width).toBeCloseTo(cellRect.width, 1);
+             expect(paneRect.left).toBeCloseTo(cellRect.left, 1);
+             expect(paneRect.top).toBeCloseTo(cellRect.top, 1);
              clearLeftoverTimers();
            }));
 
@@ -567,25 +567,25 @@ matPopoverEditTabOut`, fakeAsync(() => {
              component.openLens();
 
              let paneRect = component.getEditPane()!.getBoundingClientRect();
-             expect(paneRect.top).toBe(cellRects[0].top);
-             expect(paneRect.left).toBe(cellRects[0].left);
-             expect(paneRect.right).toBe(cellRects[1].right);
+             expect(paneRect.top).toBeCloseTo(cellRects[0].top, 1);
+             expect(paneRect.left).toBeCloseTo(cellRects[0].left, 1);
+             expect(paneRect.right).toBeCloseTo(cellRects[1].right, 1);
 
              component.colspan = {after: 1};
              fixture.detectChanges();
 
              paneRect = component.getEditPane()!.getBoundingClientRect();
-             expect(paneRect.top).toBe(cellRects[1].top);
-             expect(paneRect.left).toBe(cellRects[1].left);
-             expect(paneRect.right).toBe(cellRects[2].right);
+             expect(paneRect.top).toBeCloseTo(cellRects[1].top, 1);
+             expect(paneRect.left).toBeCloseTo(cellRects[1].left, 1);
+             expect(paneRect.right).toBeCloseTo(cellRects[2].right, 1);
 
              component.colspan = {before: 1, after: 1};
              fixture.detectChanges();
 
              paneRect = component.getEditPane()!.getBoundingClientRect();
-             expect(paneRect.top).toBe(cellRects[0].top);
-             expect(paneRect.left).toBe(cellRects[0].left);
-             expect(paneRect.right).toBe(cellRects[2].right);
+             expect(paneRect.top).toBeCloseTo(cellRects[0].top, 1);
+             expect(paneRect.left).toBeCloseTo(cellRects[0].left, 1);
+             expect(paneRect.right).toBeCloseTo(cellRects[2].right, 1);
              clearLeftoverTimers();
            }));
 
