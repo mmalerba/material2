@@ -102,7 +102,10 @@ describe('performance overhead of the protractor harness', () => {
       ignoreBrowserSynchronization: true,
       params: [],
       setup: () => { loader = ProtractorHarnessEnvironment.loader(); },
-      work: async () => await (await loader.getHarness(MatButtonHarness.with({text: '0'}))).click(),
+      work: async () => {
+        const button = await loader.getHarness(MatButtonHarness.with({text: '0'}));
+        await button.click();
+      },
     });
   });
 
@@ -113,7 +116,10 @@ describe('performance overhead of the protractor harness', () => {
       ignoreBrowserSynchronization: true,
       params: [],
       setup: () => { loader = ProtractorHarnessEnvironment.loader(); },
-      work: async () => await (await loader.getHarness(MatButtonHarness.with({text: '12'}))).click(),
+      work: async () => {
+        const button = await loader.getHarness(MatButtonHarness.with({text: '12'}));
+        await button.click();
+      },
     });
   });
 
@@ -124,7 +130,10 @@ describe('performance overhead of the protractor harness', () => {
       ignoreBrowserSynchronization: true,
       params: [],
       setup: () => { loader = ProtractorHarnessEnvironment.loader(); },
-      work: async () => await (await loader.getHarness(MatButtonHarness.with({text: '24'}))).click(),
+      work: async () => {
+        const button = await loader.getHarness(MatButtonHarness.with({text: '24'}));
+        await button.click();
+      },
     });
   });
 
