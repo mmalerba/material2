@@ -21,7 +21,7 @@ import {MatButtonModule} from '@angular/material/button';
   styleUrls: ['//src/material/core/theming/prebuilt/indigo-pink.css'],
 })
 export class ButtonHarnessTest {
-	vals = Array.from({ length: 100 }, (_, i) => i);
+	vals = Array.from({ length: 25 }, (_, i) => i);
 }
 
 @NgModule({
