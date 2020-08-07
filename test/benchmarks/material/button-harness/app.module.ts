@@ -13,15 +13,15 @@ import {MatButtonModule} from '@angular/material/button';
 /** component: mat-raised-button-harness-test */
 
 @Component({
-	selector: 'app-root',
+  selector: 'app-root',
   template: `
     <button *ngFor="let val of vals" mat-button> {{ val }} </button>
-	`,
-	encapsulation: ViewEncapsulation.None,
+  `,
+  encapsulation: ViewEncapsulation.None,
   styleUrls: ['//src/material/core/theming/prebuilt/indigo-pink.css'],
 })
 export class ButtonHarnessTest {
-	vals = Array.from({ length: 25 }, (_, i) => i);
+  vals = Array.from({ length: 25 }, (_, i) => i);
 }
 
 @NgModule({
