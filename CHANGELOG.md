@@ -1,3 +1,25 @@
+## 10.0.3 "silver-potato" (2020-08-10)
+
+### material
+
+|            |                       |
+| ---------- | --------------------- |
+| bug fix |  **aria-describer:** messages not being read out in IE and Edge ([#12304](https://github.com/angular/components/issues/12304)) ([8f931bd](https://github.com/angular/components/commit/8f931bd)), closes [#12298](https://github.com/angular/components/issues/12298) |
+| bug fix |  **form-field-benchmark:** fix component comment so that form field can sync properly ([#19971](https://github.com/angular/components/issues/19971)) ([ce1e4f8](https://github.com/angular/components/commit/ce1e4f8)) |
+| bug fix |  **overlay:** overlay directives not emitting when detached externally ([#7950](https://github.com/angular/components/issues/7950)) ([44c9e0b](https://github.com/angular/components/commit/44c9e0b)) |
+| bug fix |  **snack-bar:** announcing same message twice to screen readers ([#14504](https://github.com/angular/components/issues/14504)) ([6c615c8](https://github.com/angular/components/commit/6c615c8)) |
+| performance |  **int-bar:** Convert MatInkBarFoundation adapter to class object ([#19986](https://github.com/angular/components/issues/19986)) ([8ae6819](https://github.com/angular/components/commit/8ae6819)) |
+| performance |  **tooltip:** Defer hooking up events until there's a message and the tooltip is not disabled ([#19764](https://github.com/angular/components/issues/19764)) ([7e9d6a3](https://github.com/angular/components/commit/7e9d6a3)) |
+
+### material-experimental
+
+|            |                       |
+| ---------- | --------------------- |
+| bug fix |  **chips:** fix empty check when no chips ([#20025](https://github.com/angular/components/issues/20025)) ([40b0d9b](https://github.com/angular/components/commit/40b0d9b)) |
+| bug fix |  **mdc-snack-bar:** blending in with background in high contrast mode ([#19996](https://github.com/angular/components/issues/19996)) ([a04c660](https://github.com/angular/components/commit/a04c660)) |
+| bug fix |  **mdc-tabs:** missing focus indication in high contrast mode ([#17601](https://github.com/angular/components/issues/17601)) ([5c40097](https://github.com/angular/components/commit/5c40097)) |
+
+
 ## 10.0.2 "aluminum-alliteration" (2020-07-14)
 
 ### cdk
