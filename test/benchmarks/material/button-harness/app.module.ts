@@ -9,6 +9,7 @@
 import {Component, NgModule, ViewEncapsulation} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {MatButtonModule} from '@angular/material/button';
+import {NUM_BUTTONS} from './constants';
 
 /** component: mat-raised-button-harness-test */
 
@@ -21,7 +22,7 @@ import {MatButtonModule} from '@angular/material/button';
   styleUrls: ['//src/material/core/theming/prebuilt/indigo-pink.css'],
 })
 export class ButtonHarnessTest {
-  vals = Array.from({ length: 25 }, (_, i) => i);
+  vals = Array.from({ length: NUM_BUTTONS }, (_, i) => i);
 }
 
 @NgModule({

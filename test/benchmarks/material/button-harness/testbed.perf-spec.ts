@@ -6,60 +6,79 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
-import {HarnessLoader, HarnessPredicate} from '@angular/cdk/testing';
+import {HarnessLoader} from '@angular/cdk/testing';
+import {TestbedHarnessEnvironment} from '@angular/cdk/testing/testbed';
+import {Component} from '@angular/core';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {MatButtonModule} from '@angular/material/button';
 import {MatButtonHarness} from '@angular/material/button/testing/button-harness';
-import {ProtractorHarnessEnvironment} from '@angular/cdk/testing/protractor';
-import {$$, element, by, browser} from 'protractor';
-import {benchmark} from './protractor-benchmark-utilities';
-import {NUM_BUTTONS} from './constants';
+import {benchmark, getButtonWithText} from './testbed-benchmark-utilities';
+import {FIRST_BUTTON, MIDDLE_BUTTON, NUM_BUTTONS, LAST_BUTTON} from './constants';
 
-const FIRST_BUTTON = '0';
-const MIDDLE_BUTTON = `${Math.floor(NUM_BUTTONS / 2)}`;
-const LAST_BUTTON = `${NUM_BUTTONS - 1}`;
+describe('performance baseline for the testbed harness', () => {
+  let fixture: ComponentFixture<ButtonHarnessTest>;
 
-describe('performance baseline for the protractor harness', () => {
   beforeEach(async () => {
-    await browser.get('');
+    await TestBed.configureTestingModule({
+      imports: [MatButtonModule],
+      declarations: [ButtonHarnessTest],
+    }).compileComponents();
+
+    fixture = TestBed.createComponent(ButtonHarnessTest);
+    fixture.detectChanges();
   });
 
   it('(baseline) should retrieve all of the buttons', async () => {
     await benchmark('(baseline) get every button', async () => {
-      await $$('.mat-button');
+      document.querySelectorAll('button');
     });
   });
 
   it('(baseline) should click the first button', async () => {
     await benchmark('(baseline) click first button', async () => {
-      await element(by.buttonText(FIRST_BUTTON)).click();
+      const button = getButtonWithText(FIRST_BUTTON);
+      button.click();
     });
   });
 
   it('(baseline) should click the middle button', async () => {
     await benchmark('(baseline) click middle button', async () => {
-      await element(by.buttonText(MIDDLE_BUTTON)).click();
+      const button = getButtonWithText(MIDDLE_BUTTON);
+      await button.click();
     });
   });
 
   it('(baseline) should click the last button', async () => {
     await benchmark('(baseline) click last button', async () => {
-      await element(by.buttonText(LAST_BUTTON)).click();
+      const button = getButtonWithText(LAST_BUTTON);
+      await button.click();
     });
   });
 
   it('(baseline) should click all of the buttons', async () => {
     await benchmark('(baseline) click every button', async () => {
-      const buttons = $$('.mat-button');
-      await buttons.each(async (button) => await button!.click());
+      const buttons = document.getElementsByTagName('button');
+      for (let i = 0; i < buttons.length; i++) {
+        const button = buttons[i];
+        await button.click();
+      }
     });
   });
 });
 
-describe('performance tests for the protractor harness', () => {
+describe('performance tests for the testbed harness', () => {
+  let fixture: ComponentFixture<ButtonHarnessTest>;
   let loader: HarnessLoader;
 
   beforeEach(async () => {
-    await browser.get('');
-    loader = ProtractorHarnessEnvironment.loader();
+    await TestBed.configureTestingModule({
+      imports: [MatButtonModule],
+      declarations: [ButtonHarnessTest],
+    }).compileComponents();
+
+    fixture = TestBed.createComponent(ButtonHarnessTest);
+    fixture.detectChanges();
+    loader = TestbedHarnessEnvironment.loader(fixture);
   });
 
   it('should retrieve all of the buttons', async () => {
@@ -68,17 +87,9 @@ describe('performance tests for the protractor harness', () => {
     });
   });
 
-  fit('should click the first button', async () => {
-    let query: HarnessPredicate<MatButtonHarness>;
-    let button: MatButtonHarness;
-
-    await benchmark('MatButtonHarness.with', async () => {
-      query = MatButtonHarness.with({text: FIRST_BUTTON});
-    });
-    await benchmark('getHarness', async () => {
-      button = await loader.getHarness(query);
-    });
-    await benchmark('click', async () => {
+  it('should click the first button', async () => {
+    await benchmark('click first button', async () => {
+      const button = await loader.getHarness(MatButtonHarness.with({text: FIRST_BUTTON}));
       await button.click();
     });
   });
@@ -106,4 +117,15 @@ describe('performance tests for the protractor harness', () => {
       }
     });
   });
+
+  it('should fail intentionally', () => expect(1).toBe(2));
 });
+
+@Component({
+  template: `
+    <button *ngFor="let val of vals" mat-button> {{ val }} </button>
+	`,
+})
+export class ButtonHarnessTest {
+	vals = Array.from({ length: NUM_BUTTONS }, (_, i) => i);
+}

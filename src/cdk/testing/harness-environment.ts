@@ -17,6 +17,7 @@ import {
   LocatorFnResult,
 } from './component-harness';
 import {TestElement} from './test-element';
+import {benchmark} from '../../../test/benchmarks/material/button-harness/protractor-benchmark-utilities';
 
 /** Parsed form of the queries passed to the `locatorFor*` methods. */
 type ParsedQueries<T extends ComponentHarness> = {
@@ -58,9 +59,21 @@ export abstract class HarnessEnvironment<E> implements HarnessLoader, LocatorFac
   // Implemented as part of the `LocatorFactory` interface.
   locatorFor<T extends (HarnessQuery<any> | string)[]>(...queries: T):
       AsyncFactoryFn<LocatorFnResult<T>> {
-    return () => _assertResultFound(
-        this._getAllHarnessesAndTestElements(queries),
-        _getDescriptionForLocatorForQueries(queries));
+    return async () => {
+      let allHarnessesAndTestElements: any;
+      let descriptionForLocatorForQueries: any;
+      let result: any;
+      await benchmark('_getAllHarnessesAndTestElements', async () => {
+        allHarnessesAndTestElements = await this._getAllHarnessesAndTestElements(queries);
+      });
+      await benchmark('_getDescriptionForLocatorForQueries', async () => {
+        descriptionForLocatorForQueries = _getDescriptionForLocatorForQueries(queries);
+      });
+      await benchmark('_assertResultFound', async () => {
+        result = await _assertResultFound(allHarnessesAndTestElements, descriptionForLocatorForQueries);
+      });
+      return result;
+    }
   }
 
   // Implemented as part of the `LocatorFactory` interface.
