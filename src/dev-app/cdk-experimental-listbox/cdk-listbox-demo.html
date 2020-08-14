@@ -1,15 +1,13 @@
-<ul cdkListbox class="demo-listbox"
-    [multiple]="multiSelectable"
-    [useActiveDescendant]="activeDescendant"
-    [formControl]="formControl" ngDefaultControl>
-  <li cdkOption>Apple</li>
-  <li cdkOption>Orange</li>
-  <li cdkOption>Grapefruit</li>
-  <li cdkOption>Peach</li>
+<h1>Pokemon Chooser</h1>
+
+<ul cdkListbox [formControl]="gens" multiple (selectionChange)="updateFormControl(gens, $event)">
+  <li cdkOption *ngFor="let gen of availableGens" [value]="gen">{{gen.toUpperCase()}}</li>
 </ul>
 
-<button (click)="disableForm()">Disable Form</button>
-<br>
-<button (click)="toggleMultiple()">Toggle Multiple</button>
-<br>
-<button (click)="toggleActiveDescendant()">Toggle Active Descendant</button>
+<ul cdkListbox [formControl]="mons" multiple (selectionChange)="updateFormControl(mons, $event)">
+  <li cdkOption *ngFor="let mon of availableMons" [value]="mon">{{mon.toUpperCase()}}</li>
+</ul>
+
+{{gens.value | json}}
+<br/>
+{{mons.value | json}}

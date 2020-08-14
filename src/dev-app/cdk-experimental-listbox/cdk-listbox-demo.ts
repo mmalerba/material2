@@ -6,7 +6,8 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
-import {Component} from '@angular/core';
+import {ListboxSelectionChangeEvent} from '@angular/cdk-experimental/listbox';
+import {ChangeDetectorRef, Component} from '@angular/core';
 import {FormControl} from '@angular/forms';
 
 @Component({
@@ -14,19 +15,42 @@ import {FormControl} from '@angular/forms';
   styleUrls: ['cdk-listbox-demo.css'],
 })
 export class CdkListboxDemo {
-  multiSelectable = false;
-  activeDescendant = true;
-  formControl = new FormControl();
+  pokemon: {[gen: string]: string[]} = {
+    'kanto': [
+        'bulbasaur',
+        'charmander',
+        'squirtle'
+    ],
+    'johto': [
+        'chikorita',
+        'cyndaquil',
+        'totodile'
+    ],
+    'hoenn': [
+        'treecko',
+        'torchic',
+        'mudkip'
+    ]
+  };
 
-  disableForm() {
-    this.formControl.disable();
+  availableGens = Object.keys(this.pokemon);
+  availableMons: string[] = [];
+
+  gens = new FormControl([]);
+  mons = new FormControl([]);
+
+  updateFormControl(fc: FormControl, e: ListboxSelectionChangeEvent<string>) {
+    // I don't think this should be necessary, maybe form controls aren't hooked up right?
+    fc.patchValue(e.source.getSelectedValues(), {
+      emitEvent: true,
+      emitModelToViewChange: false,
+      emitViewToModelChange: false
+    });
   }
 
-  toggleMultiple() {
-    this.multiSelectable = !this.multiSelectable;
-  }
-
-  toggleActiveDescendant() {
-    this.activeDescendant = !this.activeDescendant;
+  constructor() {
+    this.gens.valueChanges.subscribe(gens => {
+      this.availableMons = gens.flatMap((gen: string) => this.pokemon[gen]);
+    });
   }
 }
