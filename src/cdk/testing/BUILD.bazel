@@ -11,7 +11,6 @@ ts_library(
             "**/*.spec.ts",
         ],
     ),
-    deps = ["//test/benchmarks/material/button-harness:protractor-benchmark-utilities"],
     module_name = "@angular/cdk/testing",
 )
 

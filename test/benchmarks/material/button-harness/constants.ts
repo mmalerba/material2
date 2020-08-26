@@ -7,7 +7,5 @@
  */
 
 export const USE_BENCHPRESS = false;
-export const NUM_BUTTONS = 5;
-export const FIRST_BUTTON = '0';
+export const NUM_BUTTONS = 1000;
 export const MIDDLE_BUTTON = `${Math.floor(NUM_BUTTONS / 2)}`;
-export const LAST_BUTTON = `${NUM_BUTTONS - 1}`;
