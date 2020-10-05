@@ -14,5 +14,6 @@
       "@angular/material-moment-adapter": ["../material-moment-adapter/public-api.ts"]
     }
   },
-  "include": ["./**/*.ts"]
+  "include": ["./**/*.ts"],
+  "types" : ["jasmine"]
 }
